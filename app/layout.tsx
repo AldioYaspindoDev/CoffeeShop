@@ -23,6 +23,10 @@ export const metadata: Metadata = {
   title: "KOPKIT",
   description: "KOPKIT - Your Digital Workspace Haven",
   manifest: "/manifest.json",
+  icons: {
+    icon: "/kopkit/icon.webp",
+    apple: "/kopkit/icon.webp",
+  },
 };
 
 export const viewport = {

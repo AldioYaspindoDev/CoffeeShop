@@ -60,7 +60,7 @@ export default function Gallery() {
                         src={galleryData[3].image}
                         alt="Gallery 4"
                         fill
-                        sizes="100vw"
+                        sizes="(max-width: 768px) 100vw, 66vw"
                         style={{ objectFit: "cover" }}
                         className="transition-transform duration-500 hover:scale-110"
                     />
