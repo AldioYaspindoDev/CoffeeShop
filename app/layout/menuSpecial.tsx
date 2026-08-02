@@ -14,9 +14,9 @@ export default function MenuSpecial() {
                     <h3 className="text-lg md:text-xl text-white/60">Temukan Menu Baru dan Promo Kami disini</h3>
                 </div>
             </div>
-            <div className="flex flex-col md:flex-row flex-wrap lg:flex-nowrap justify-center gap-8 mt-12 max-w-[1400px] mx-auto w-full">
+            <div className="flex flex-row overflow-x-auto justify-start md:justify-center gap-6 md:gap-8 mt-12 max-w-[1400px] mx-auto w-full px-4 md:px-0 pb-4 snap-x snap-mandatory scrollbar-none">
                 {menuSpecialData.map((menu, idx) => (
-                    <div key={idx} className="flex flex-col items-center w-full max-w-[360px] md:w-[30%]">
+                    <div key={idx} className="flex flex-col items-center shrink-0 w-[260px] sm:w-[300px] md:w-[30%] max-w-[360px] snap-center">
                         <div className="overflow-hidden rounded-3xl w-full aspect-[3/4]">
                             <Image
                                 src={menu.image}

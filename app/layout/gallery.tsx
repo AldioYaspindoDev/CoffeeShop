@@ -3,7 +3,7 @@ import { galleryData } from "../data/galleryData"
 
 export default function Gallery() {
     return (
-        <section className="relative bg-[#1E1E1E] -mx-[30px] md:mx-0 p-6 py-16 md:p-20 rounded-3xl mb-20 overflow-hidden">
+        <section className="relative bg-[#1E1E1E] px-6 py-12 md:px-20 md:py-20 rounded-3xl mb-20 overflow-hidden">
 
             {/* Dekorasi lingkaran latar */}
             <div className="absolute -top-20 -left-20 w-72 h-72 bg-white opacity-5 rounded-full" />

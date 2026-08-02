@@ -9,9 +9,9 @@ export default function TakeUsWithYou() {
                 <h3 className="text-lg md:text-2xl text-black/70">Bawa Kami Dalam Setiap Keseharianmu</h3>
             </div>
 
-            <div className="flex flex-col md:flex-row justify-center gap-10 md:gap-12 items-stretch">
+            <div className="flex flex-row overflow-x-auto justify-start md:justify-center gap-6 md:gap-12 items-stretch w-full px-4 md:px-0 pb-4 snap-x snap-mandatory scrollbar-none">
                 {takeuswithyouData.map((data, idx) => (
-                    <div key={idx} className="flex flex-col items-center bg-white rounded-3xl p-6 shadow-sm border border-black/5 hover:shadow-md transition-shadow duration-300 w-full md:w-[30%] max-w-[360px] mx-auto">
+                    <div key={idx} className="flex flex-col items-center shrink-0 bg-white rounded-3xl p-6 shadow-sm border border-black/5 hover:shadow-md transition-shadow duration-300 w-[260px] sm:w-[300px] md:w-[30%] max-w-[360px] snap-center">
                         <div className="flex flex-col items-center w-full aspect-square overflow-hidden rounded-2xl mb-6">
                             <Image
                                 src={data.image}

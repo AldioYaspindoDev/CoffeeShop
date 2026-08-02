@@ -25,8 +25,8 @@ export default function Footer() {
                     </p>
                 </div>
 
-                {/* Kanan — Kolom navigasi */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-10 md:gap-16 w-full lg:w-auto">
+                {/* Desktop View (>= md) */}
+                <div className="hidden md:grid grid-cols-3 gap-10 md:gap-16 w-full lg:w-auto">
 
                     {/* Lokasi */}
                     <div className="flex flex-col gap-3">
@@ -49,18 +49,107 @@ export default function Footer() {
                     </div>
 
                     {/* Kontak */}
-                    <div className="flex flex-col gap-3 col-span-2 sm:col-span-1">
+                    <div className="flex flex-col gap-3">
                         <h4 className="text-white text-xl md:text-2xl font-bold mb-1">Kontak</h4>
-                        <div className="grid grid-cols-2 sm:grid-cols-1 gap-3">
-                            {["Instagram", "TikTok", "Facebook", "Whatsapp", "Email"].map((kontak) => (
-                                <Link key={kontak} href="#" className="text-white/60 text-sm md:text-base hover:text-white transition-colors duration-200">
-                                    {kontak}
-                                </Link>
-                            ))}
-                        </div>
+                        {["Instagram", "TikTok", "Facebook", "Whatsapp", "Email"].map((kontak) => (
+                            <Link key={kontak} href="#" className="text-white/60 text-sm md:text-base hover:text-white transition-colors duration-200">
+                                {kontak}
+                            </Link>
+                        ))}
                     </div>
 
                 </div>
+
+                {/* Mobile Accordion View (< md) */}
+                <div className="md:hidden w-full border-t border-white/10">
+                    {/* Lokasi */}
+                    <details className="group border-b border-white/10">
+                        <summary className="flex justify-between items-center py-4 px-2 cursor-pointer list-none text-white text-base font-bold">
+                            <span>Lokasi</span>
+                            <svg
+                                className="w-4 h-4 transition-transform group-open:rotate-45 text-white/60"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2.5}
+                                    d="M12 4v16m8-8H4"
+                                />
+                            </svg>
+                        </summary>
+                        <ul className="pb-4 pt-1 px-3 space-y-2.5 text-white/60 text-sm font-medium">
+                            {["Abdul Muis", "Veteran", "Alahan Panjang", "Sutomo", "Jhoni Anwar", "Gunung Panggilun", "Fabriek Padang", "Pondok"].map((loc) => (
+                                <li key={loc}>
+                                    <Link href="#" className="hover:text-white transition block">
+                                        {loc}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </details>
+
+                    {/* Menu */}
+                    <details className="group border-b border-white/10">
+                        <summary className="flex justify-between items-center py-4 px-2 cursor-pointer list-none text-white text-base font-bold">
+                            <span>Menu</span>
+                            <svg
+                                className="w-4 h-4 transition-transform group-open:rotate-45 text-white/60"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2.5}
+                                    d="M12 4v16m8-8H4"
+                                />
+                            </svg>
+                        </summary>
+                        <ul className="pb-4 pt-1 px-3 space-y-2.5 text-white/60 text-sm font-medium">
+                            {["Kopi", "Makanan", "Snack", "Non-kopi"].map((menu) => (
+                                <li key={menu}>
+                                    <Link href="#" className="hover:text-white transition block">
+                                        {menu}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </details>
+
+                    {/* Kontak */}
+                    <details className="group border-b border-white/10">
+                        <summary className="flex justify-between items-center py-4 px-2 cursor-pointer list-none text-white text-base font-bold">
+                            <span>Kontak</span>
+                            <svg
+                                className="w-4 h-4 transition-transform group-open:rotate-45 text-white/60"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2.5}
+                                    d="M12 4v16m8-8H4"
+                                />
+                            </svg>
+                        </summary>
+                        <ul className="pb-4 pt-1 px-3 space-y-2.5 text-white/60 text-sm font-medium">
+                            {["Instagram", "TikTok", "Facebook", "Whatsapp", "Email"].map((kontak) => (
+                                <li key={kontak}>
+                                    <Link href="#" className="hover:text-white transition block">
+                                        {kontak}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </details>
+                </div>
+
             </div>
 
             {/* Garis pemisah */}

@@ -21,7 +21,7 @@ export default function HeroSection(){
                 </div>
             </div>
 
-            <div className="w-full max-w-[320px] sm:max-w-[400px] md:max-w-[450px] lg:max-w-[500px]">
+            <div className="hidden md:block w-full max-w-[320px] sm:max-w-[400px] md:max-w-[450px] lg:max-w-[500px]">
                 <Image
                     width={400}
                     height={400}
