@@ -29,7 +29,7 @@ export default function CtaAbout() {
                         
                         <div className="mt-4">
                             <a 
-                                href="#pilihan-kopi-section"
+                                href="https://maps.app.goo.gl/5cymV1hEAWsPMVtH6"
                                 className="inline-block bg-[#EAEAEA] hover:bg-white text-black font-semibold px-8 py-3.5 rounded-full shadow-md transition-all duration-300 hover:scale-105 active:scale-95"
                             >
                                 Temukan Lokasi

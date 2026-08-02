@@ -10,7 +10,8 @@ export default function AboutKopkit(){
                     width={500}
                     height={500}
                     alt="about kopkit image"
-                    style={{ width: "100%", height: "auto" }}
+                    className="w-full h-auto"
+                    style={{ height: "auto" }}
                 />
             </div>
 

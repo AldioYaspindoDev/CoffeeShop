@@ -20,7 +20,7 @@ export default function CallToAction() {
 
                 {/* Tombol */}
                 <a
-                    href="#"
+                    href="/menu"
                     className="relative z-10 bg-white text-[#1E1E1E] font-semibold text-base md:text-lg px-8 py-3.5 md:px-10 md:py-4 rounded-full transition-all duration-300 hover:bg-[#1E1E1E] hover:text-white hover:outline hover:outline-2 hover:outline-white hover:scale-105 w-full md:w-auto"
                 >
                     Lihat Menu →

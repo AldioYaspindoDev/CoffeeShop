@@ -28,7 +28,8 @@ export default function HeroSection(){
                     src="/kopkit/HeroImage.png"
                     alt="Hero Section Image Kopkit"
                     priority
-                    style={{ width: "100%", height: "auto" }}
+                    className="w-full h-auto"
+                    style={{ height: "auto" }}
                 />
             </div>
         </div>

@@ -24,7 +24,6 @@ export default function Navbar() {
                             height={65}
                             src="/kopkit/LogoMain.png"
                             alt="Logo KopKit"
-                            style={{ width: "65px", height: "auto" }}
                         />
                     </div>
                     {/* Hamburger Button untuk Mobile */}
