@@ -1,14 +1,14 @@
 "use client"
 
 import { useState } from "react"
-import Navbar from "../layout/navbar"
-import HeroMenu from "../layoutMenu/heroMenu"
-import NavMenu from "../layoutMenu/navMenu"
-import WeeklyPromo from "../layoutMenu/weeklyPromo"
-import MenuCard from "../layoutMenu/menuCard"
-import Footer from "../layout/footer"
+import Navbar from "@/components/sections/navbar"
+import HeroMenu from "@/components/menu/heroMenu"
+import NavMenu from "@/components/menu/navMenu"
+import WeeklyPromo from "@/components/menu/weeklyPromo"
+import MenuCard from "@/components/menu/menuCard"
+import Footer from "@/components/sections/footer"
 
-export default function Menu(){
+export default function Menu() {
     const [selectedCategory, setSelectedCategory] = useState("Semua")
     const [currentPage, setCurrentPage] = useState(1)
 
@@ -18,21 +18,21 @@ export default function Menu(){
         setCurrentPage(1)
     }
 
-    return(
+    return (
         <main>
-            <Navbar/>
-            <HeroMenu/>
-            <NavMenu 
-                selectedCategory={selectedCategory} 
-                setSelectedCategory={handleCategoryChange} 
+            <Navbar />
+            <HeroMenu />
+            <NavMenu
+                selectedCategory={selectedCategory}
+                setSelectedCategory={handleCategoryChange}
             />
-            <WeeklyPromo/>
-            <MenuCard 
-                selectedCategory={selectedCategory} 
+            <WeeklyPromo />
+            <MenuCard
+                selectedCategory={selectedCategory}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
             />
-            <Footer/>
+            <Footer />
         </main>
     )
 }

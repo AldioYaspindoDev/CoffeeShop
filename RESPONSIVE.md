@@ -154,3 +154,5 @@ Tambahkan elemen berikut supaya saat dibuka dari HP Android (terutama jika di-"A
 - [ ] Saat "Add to Home Screen" di Android, tampilan terbuka tanpa address bar (standalone mode)
 - [ ] Tidak ada elemen yang tertutup notch/status bar di HP layar penuh
 - [ ] Palet warna, tipografi, dan gaya ilustrasi dari MENU.md tetap konsisten di semua breakpoint
+- [ ] Palet warna, tipografi, dan gaya ilustrasi dari MENU.md tetap konsisten di npx prisma migrate dev --name init
+
