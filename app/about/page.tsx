@@ -1,10 +1,10 @@
-import Navbar from "@/components/sections/navbar"
+import Navbar from "@/components/ui/navbar"
 import HeroAbout from "@/components/about/heroAbout"
 import OurValue from "@/components/about/ourValue"
 import Gallery from "@/components/sections/gallery"
 import FullLocation2 from "@/components/about/fullLocation2"
 import CtaAbout from "@/components/about/ctaAbout"
-import Footer from "@/components/sections/footer"
+import Footer from "@/components/ui/footer"
 
 export default function About() {
     return (

@@ -1,12 +1,12 @@
 "use client"
 
 import { useState } from "react"
-import Navbar from "@/components/sections/navbar"
+import Navbar from "@/components/ui/navbar"
 import HeroMenu from "@/components/menu/heroMenu"
 import NavMenu from "@/components/menu/navMenu"
 import WeeklyPromo from "@/components/menu/weeklyPromo"
 import MenuCard from "@/components/menu/menuCard"
-import Footer from "@/components/sections/footer"
+import Footer from "@/components/ui/footer"
 
 export default function Menu() {
     const [selectedCategory, setSelectedCategory] = useState("Semua")

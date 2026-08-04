@@ -20,7 +20,10 @@ export class MenuRepository{
     // Logik created
     async created(data: CreatedMenuDto){
         return prisma.menu.create({
-            data
+            data,
+            include: {
+                category: true,
+            }
         });
     }
 }
