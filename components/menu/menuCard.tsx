@@ -1,218 +1,200 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Image from "next/image"
-import { menuData } from "@/lib/data/menuData"
-import { menuInterface } from "@/lib/types/menuInterface"
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
+import { menuData } from "@/lib/data/menuData";
+import { menuInterface } from "@/lib/types/menuInterface";
+import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 
 interface MenuCardProps {
-    selectedCategory: string
-    currentPage: number
-    setCurrentPage: (page: number) => void
+  selectedCategory: string;
+  currentPage: number;
+  setCurrentPage: (page: number) => void;
 }
 
-export default function MenuCard({ selectedCategory, currentPage, setCurrentPage }: MenuCardProps) {
-    const ITEMS_PER_PAGE = 6
-    const [menus, setMenus] = useState<menuInterface[]>([])
-    const [loading, setLoading] = useState(true)
+export default function MenuCard({
+  selectedCategory,
+  currentPage,
+  setCurrentPage,
+}: MenuCardProps) {
+  const ITEMS_PER_PAGE = 6;
+  const [menus, setMenus] = useState<menuInterface[]>([]);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchMenus = async () => {
-            try {
-                const res = await fetch("/api/menu")
-                if (res.ok) {
-                    const data = await res.json()
-                    if (data && data.length > 0) {
-                        setMenus(data)
-                    } else {
-                        setMenus(menuData)
-                    }
-                } else {
-                    setMenus(menuData)
-                }
-            } catch (error) {
-                console.error("Error fetching menus:", error)
-                setMenus(menuData)
-            } finally {
-                setLoading(false)
-            }
+  useEffect(() => {
+    const fetchMenus = async () => {
+      try {
+        const res = await fetch("/api/menu");
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.length > 0) {
+            setMenus(data);
+          } else {
+            setMenus(menuData);
+          }
+        } else {
+          setMenus(menuData);
         }
-        fetchMenus()
-    }, [])
+      } catch (error) {
+        console.error("Error fetching menus:", error);
+        setMenus(menuData);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchMenus();
+  }, []);
 
-    const getCategoryName = (category: menuInterface["category"]): string => {
-        if (category && typeof category === "object") {
-            return category.name || ""
-        }
-        return category || ""
+  const getCategoryName = (category: menuInterface["category"]): string => {
+    if (category && typeof category === "object") {
+      return category.name || "";
     }
+    return category || "";
+  };
 
-    const getDescription = (data: menuInterface): string => {
-        return data.productDescription || data.productDestcription || ""
+  const getDescription = (data: menuInterface): string => {
+    return data.productDescription || data.productDestcription || "";
+  };
+
+  const formatPrice = (price: menuInterface["productPricing"]): string => {
+    if (typeof price === "number") {
+      return price >= 1000 ? `${price / 1000}K` : `${price}`;
     }
+    return price || "";
+  };
 
-    const formatPrice = (price: menuInterface["productPricing"]): string => {
-        if (typeof price === "number") {
-            return price >= 1000 ? `${price / 1000}K` : `${price}`
-        }
-        return price || ""
+  const filteredMenus = menus.filter((data) => {
+    const catName = getCategoryName(data.category);
+    if (selectedCategory === "Semua") return true;
+    return catName.toLowerCase() === selectedCategory.toLowerCase();
+  });
+
+  const totalPages = Math.ceil(filteredMenus.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const paginatedMenus = filteredMenus.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+      const section = document.getElementById("pilihan-kopi-section");
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth" });
+      }
     }
+  };
 
-    // 1. Filter data berdasarkan kategori
-    const filteredMenus = menus.filter((data) => {
-        const catName = getCategoryName(data.category)
-        if (selectedCategory === "Semua") return true
-        return catName.toLowerCase() === selectedCategory.toLowerCase()
-    })
+  return (
+    <section id="pilihan-kopi-section" className="px-4 py-3 flex flex-col gap-2.5">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-sm font-bold text-[#1E1E1E] tracking-tight">Menu</h2>
+          <p className="text-[11px] text-[#707070]">
+            {loading
+              ? "Memuat..."
+              : `${filteredMenus.length} Varian - "${selectedCategory}"`}
+          </p>
+        </div>
+      </div>
 
-    // 2. Hitung total halaman
-    const totalPages = Math.ceil(filteredMenus.length / ITEMS_PER_PAGE)
-
-    // 3. Potong data sesuai halaman aktif saat ini
-    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
-    const paginatedMenus = filteredMenus.slice(startIndex, startIndex + ITEMS_PER_PAGE)
-
-    // Handler untuk berganti halaman
-    const handlePageChange = (page: number) => {
-        if (page >= 1 && page <= totalPages) {
-            setCurrentPage(page)
-            const section = document.getElementById("pilihan-kopi-section")
-            if (section) {
-                section.scrollIntoView({ behavior: "smooth" })
-            }
-        }
-    }
-
-    return (
-        <section id="pilihan-kopi-section" className="py-16 px-6 md:px-20 bg-white">
-            <div className="mb-10 flex flex-col sm:flex-row justify-between sm:items-end gap-4">
-                <div>
-                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900">Pilihan Kopi</h2>
-                    <p className="text-sm text-gray-400 mt-1">
-                        {loading 
-                            ? "Memuat menu..." 
-                            : `Menampilkan ${filteredMenus.length} menu untuk kategori "${selectedCategory}"`
-                        }
-                    </p>
-                </div>
+      {loading ? (
+        <div className="grid grid-cols-1 gap-2.5">
+          {Array.from({ length: 4 }).map((_, idx) => (
+            <div
+              key={idx}
+              className="bg-white border border-[#E8E8E8] rounded-xl p-3 flex items-center gap-3 animate-pulse"
+            >
+              <div className="w-16 h-16 rounded-lg bg-[#F7F7F7] shrink-0" />
+              <div className="flex-1 flex flex-col gap-2">
+                <div className="h-3.5 bg-[#F7F7F7] rounded w-2/3" />
+                <div className="h-3 bg-[#F7F7F7] rounded w-full" />
+              </div>
             </div>
+          ))}
+        </div>
+      ) : filteredMenus.length === 0 ? (
+        <div className="text-center py-10 bg-[#F7F7F7] border border-[#E8E8E8] rounded-xl p-4">
+          <p className="text-[#707070] text-xs">
+            Menu tidak ditemukan untuk kategori ini.
+          </p>
+        </div>
+      ) : (
+        <div className="flex flex-col gap-2.5">
+          {paginatedMenus.map((data, idx) => (
+            <div
+              key={data.id || idx}
+              className="bg-white border border-[#E8E8E8] rounded-xl p-3 flex items-center gap-3 shadow-xs hover:border-[#1E1E1E]/30 transition"
+            >
+              {/* Product Image */}
+              <div className="relative w-16 h-16 shrink-0 rounded-lg overflow-hidden bg-[#F7F7F7]">
+                <Image
+                  src={data.images}
+                  alt={data.productName}
+                  fill
+                  className="object-cover"
+                  sizes="64px"
+                />
+              </div>
 
-            {loading ? (
-                /* Premium skeleton loader */
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    {Array.from({ length: 4 }).map((_, idx) => (
-                        <div
-                            key={idx}
-                            className="bg-[#F5F5F5]/40 border border-transparent rounded-[40px] p-6 flex flex-col sm:flex-row items-center gap-6 animate-pulse"
-                        >
-                            <div className="w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 flex-shrink-0 rounded-[32px] bg-gray-200" />
-                            <div className="flex-1 w-full py-1">
-                                <div className="flex justify-between items-start gap-4 mb-3">
-                                    <div className="h-7 bg-gray-200 rounded-lg w-1/2" />
-                                    <div className="h-7 bg-gray-200 rounded-lg w-1/4" />
-                                </div>
-                                <div className="h-4 bg-gray-200 rounded-lg w-full mb-2" />
-                                <div className="h-4 bg-gray-200 rounded-lg w-5/6 mb-4" />
-                                <div className="h-6 bg-gray-200 rounded-full w-20" />
-                            </div>
-                        </div>
-                    ))}
+              {/* Product Details */}
+              <div className="flex-1 flex flex-col justify-between min-h-[64px]">
+                <div>
+                  <div className="flex items-start justify-between gap-1">
+                    <h3 className="text-xs font-semibold text-[#1E1E1E] leading-tight line-clamp-1">
+                      {data.productName}
+                    </h3>
+                    <span className="text-xs font-bold text-[#1E1E1E] shrink-0">
+                      {formatPrice(data.productPricing)}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-[#707070] line-clamp-1 leading-tight mt-0.5">
+                    {getDescription(data)}
+                  </p>
                 </div>
-            ) : filteredMenus.length === 0 ? (
-                <div className="text-center py-20 bg-gray-50 rounded-[40px]">
-                    <p className="text-gray-500 font-medium text-lg">Menu tidak ditemukan untuk kategori ini.</p>
+
+                <div className="flex items-center justify-between mt-1">
+                  <span className="text-[10px] text-[#707070] bg-[#F7F7F7] border border-[#E8E8E8] px-2 py-0.5 rounded font-medium">
+                    {getCategoryName(data.category)}
+                  </span>
+                  <button
+                    onClick={() => alert(`Pesanan ${data.productName} ditambahkan!`)}
+                    className="p-1 rounded-md bg-[#1E1E1E] hover:bg-black text-white font-medium transition active:scale-98 min-h-[28px] min-w-[28px] flex items-center justify-center"
+                    aria-label="Tambah Pesanan"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                  </button>
                 </div>
-            ) : (
-                <>
-                    {/* Grid menu cards */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        {paginatedMenus.map((data, idx) => (
-                            <div
-                                key={data.id || idx}
-                                className="bg-[#F5F5F5]/60 hover:bg-[#F5F5F5] border border-transparent hover:border-gray-200/50 rounded-[40px] p-6 flex flex-col sm:flex-row items-center gap-6 transition-all duration-300"
-                            >
-                                {/* Container Gambar Kopi */}
-                                <div className="relative w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 flex-shrink-0 rounded-[32px] overflow-hidden bg-gray-200">
-                                    <Image
-                                        src={data.images}
-                                        alt={data.productName}
-                                        fill
-                                        sizes="(max-width: 640px) 128px, (max-width: 768px) 144px, 160px"
-                                        className="object-cover"
-                                    />
-                                    {data.isBestSeller && idx % 2 === 1 && (
-                                        <span className="absolute top-3 left-3 bg-black text-white text-[9px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">
-                                            PROMO
-                                         </span>
-                                    )}
-                                </div>
+              </div>
+            </div>
+          ))}
 
-                                {/* Detail Informasi Kopi */}
-                                <div className="flex-1 flex flex-col justify-between w-full min-h-[120px] py-1">
-                                    <div>
-                                        <div className="flex justify-between items-start gap-4">
-                                            <h3 className="text-xl md:text-2xl font-bold text-gray-900">{data.productName}</h3>
-                                            <div className="flex flex-col items-end">
-                                                <span className="text-xl md:text-2xl font-bold text-gray-900">{formatPrice(data.productPricing)}</span>
-                                                {data.isBestSeller && idx % 2 === 1 && (
-                                                    <span className="text-xs text-gray-400 line-through">28K</span>
-                                                )}
-                                            </div>
-                                        </div>
-                                        <p className="text-sm md:text-base text-gray-500 mt-2 line-clamp-2 font-medium">
-                                            {getDescription(data)}
-                                        </p>
-                                    </div>
+          {/* Minimal Pagination */}
+          {totalPages > 1 && (
+            <div className="mt-1 flex justify-between items-center bg-white border border-[#E8E8E8] rounded-xl p-2">
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="px-3 py-1.5 rounded-lg text-xs font-medium bg-[#F7F7F7] text-[#1E1E1E] disabled:opacity-40 flex items-center gap-1 min-h-[36px] transition active:scale-98 border border-[#E8E8E8]"
+              >
+                <ChevronLeft className="w-3.5 h-3.5" />
+                Prev
+              </button>
 
-                                    {/* Tag Kategori */}
-                                    <div className="mt-4 flex flex-wrap gap-2">
-                                        <span className="text-[10px] md:text-xs font-bold text-gray-600 bg-gray-200/60 uppercase tracking-wide px-3 py-1.5 rounded-full">
-                                            {getCategoryName(data.category)}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+              <span className="text-xs text-[#707070]">
+                <strong className="text-[#1E1E1E]">{currentPage}</strong> / {totalPages}
+              </span>
 
-                    {/* Pagination Controls */}
-                    {totalPages > 1 && (
-                        <div className="mt-12 flex justify-center items-center gap-2">
-                            <button
-                                onClick={() => handlePageChange(currentPage - 1)}
-                                disabled={currentPage === 1}
-                                className="px-4 py-2 rounded-full text-sm font-semibold border border-gray-200 hover:bg-gray-50 text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                            >
-                                Sebelumnya
-                            </button>
-
-                            <div className="flex gap-1.5">
-                                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                                    <button
-                                        key={page}
-                                        onClick={() => handlePageChange(page)}
-                                        className={`w-10 h-10 rounded-full text-sm font-semibold flex items-center justify-center transition-all ${
-                                            currentPage === page
-                                                ? "bg-black text-white shadow-sm"
-                                                : "border border-transparent hover:border-gray-200 text-gray-700 hover:bg-gray-50"
-                                        }`}
-                                    >
-                                        {page}
-                                    </button>
-                                ))}
-                            </div>
-
-                            <button
-                                onClick={() => handlePageChange(currentPage + 1)}
-                                disabled={currentPage === totalPages}
-                                className="px-4 py-2 rounded-full text-sm font-semibold border border-gray-200 hover:bg-gray-50 text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                            >
-                                Selanjutnya
-                            </button>
-                        </div>
-                    )}
-                </>
-            )}
-        </section>
-    )
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="px-3 py-1.5 rounded-lg text-xs font-medium bg-[#1E1E1E] text-white disabled:opacity-40 flex items-center gap-1 min-h-[36px] transition active:scale-98"
+              >
+                Next
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+    </section>
+  );
 }

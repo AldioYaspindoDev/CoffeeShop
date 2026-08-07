@@ -1,57 +1,66 @@
-import { HiLocationMarker } from "react-icons/hi"
-import { locationData } from "@/lib/data/locationData"
+"use client";
+
+import React from "react";
+import { locationData } from "@/lib/data/locationData";
+import { MapPin, Navigation } from "lucide-react";
 
 export default function Location() {
-    return (
-        <section className="flex flex-col gap-10 px-6 py-16 md:p-20 max-w-[1400px] mx-auto">
-            <div className="flex flex-col items-center gap-3 text-center">
-                <div>
-                    <h1 className="text-3xl md:text-4xl font-bold text-black">Lokasi Toko Kopi Kita</h1>
-                </div>
+  return (
+    <section id="location" className="px-4 py-3 flex flex-col gap-3">
+      <div>
+        <h2 className="text-base font-bold text-[#1E1E1E] tracking-tight">Lokasi Toko Kopi</h2>
+        <p className="text-[11px] text-[#707070]">Cabang Coffee terdekat Anda</p>
+      </div>
 
-                <div>
-                    <h3 className="text-lg md:text-xl text-black/70">Temukan Kami di Lokasi Berikut ini ya</h3>
-                </div>
+      {/* Embedded Google Maps Container */}
+      <div className="w-full h-44 rounded-xl overflow-hidden border border-[#E8E8E8] bg-[#F7F7F7]">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6511988.520441004!2d-124.60181457542323!3d37.16026274770206!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808fb9fe5f285e3d%3A0x8b5109a227086f55!2sCalifornia%2C%20Amerika%20Serikat!5e0!3m2!1sid!2sid!4v1786072815751!5m2!1sid!2sid"
+          width="100%"
+          height="100%"
+          style={{ border: 0 }}
+          allowFullScreen
+          loading="lazy"
+          referrerPolicy="strict-origin-when-cross-origin"
+          className="w-full h-full"
+        />
+      </div>
+
+      {/* Location Cards */}
+      <div className="flex flex-col gap-2">
+        {locationData.map((data, idx) => (
+          <div
+            key={idx}
+            className="bg-white border border-[#E8E8E8] rounded-xl p-3.5 shadow-xs flex flex-col gap-2"
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1.5">
+                <MapPin className="w-4 h-4 text-[#1E1E1E] shrink-0" />
+                <h3 className="text-xs font-semibold text-[#1E1E1E]">{data.locationName}</h3>
+              </div>
+              <span className="text-[10px] bg-[#F7F7F7] text-[#707070] border border-[#E8E8E8] px-2 py-0.5 rounded-md font-medium">
+                Buka
+              </span>
             </div>
 
-            <div className="flex flex-col items-center w-full">
-                <div className="w-full max-w-[800px] aspect-video rounded-xl overflow-hidden outline-2 outline-offset-2 outline-black">
-                    <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d35657.57550221389!2d100.37786998612893!3d-0.920869219480557!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sKOPKIT!5e0!3m2!1sid!2sid!4v1785556472857!5m2!1sid!2sid"
-                        className="w-full h-full"
-                        style={{ border: 0 }}
-                        allowFullScreen
-                        loading="lazy"
-                        referrerPolicy="strict-origin-when-cross-origin"
-                    ></iframe>
-                </div>
+            <p className="text-[11px] text-[#707070] leading-relaxed pl-5">
+              {data.locationDetail}
+            </p>
+
+            <div className="pt-1 flex justify-end">
+              <a
+                href={`https://maps.google.com/?q=${encodeURIComponent(data.locationName + " " + data.locationDetail)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 py-1.5 rounded-lg bg-[#F7F7F7] hover:bg-[#E8E8E8] text-[#1E1E1E] text-xs font-medium flex items-center gap-1 min-h-[36px] transition active:scale-98 border border-[#E8E8E8]"
+              >
+                <Navigation className="w-3.5 h-3.5" />
+                Petunjuk Arah
+              </a>
             </div>
-
-            <div className="flex flex-col items-center w-full px-0 md:px-20">
-                <div className="w-full max-w-3xl">
-                    {locationData.map((data, idx) => (
-                        <div key={idx}>
-                            {idx !== 0 && <hr className="border-gray-200" />}
-
-                            <div className="flex flex-col md:grid md:grid-cols-[40px_200px_1fr] items-start md:items-center gap-3 md:gap-6 py-6 text-left">
-                                <div className="flex items-center gap-3 md:contents">
-                                    <div className="text-2xl text-red-500">
-                                        <HiLocationMarker />
-                                    </div>
-
-                                    <h2 className="text-xl md:text-2xl font-bold leading-tight text-black">
-                                        {data.locationName}
-                                    </h2>
-                                </div>
-
-                                <p className="text-sm md:text-base text-black/60 leading-relaxed pl-9 md:pl-0">
-                                    {data.locationDetail}
-                                </p>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </section>
-    )
+          </div>
+        ))}
+      </div>
+    </section>
+  );
 }

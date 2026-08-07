@@ -1,77 +1,60 @@
-"use client"
+"use client";
 
-import { MdDashboard } from "react-icons/md";
-import { MdCategory } from "react-icons/md";
-import { MdOutlineRestaurantMenu } from "react-icons/md";
-import { PiNoteDuotone } from "react-icons/pi";
-import { MdPayments } from "react-icons/md";
-import { IoMdSettings } from "react-icons/io";
-import { sidebarData } from "@/lib/data/sidebarData";
-import { usePathname } from "next/navigation";
-import { IoMdExit } from "react-icons/io";
-import Image from "next/image";
+import React from "react";
 import Link from "next/link";
-    
-const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
-    MdDashboard: MdDashboard,
-    MdCategory: MdCategory,
-    MdOutlineRestaurantMenu: MdOutlineRestaurantMenu,
-    PiNoteDuotone: PiNoteDuotone,
-    MdPayments: MdPayments,
-    IoMdSettings: IoMdSettings,
-}
+import { usePathname } from "next/navigation";
+import { sidebarData } from "@/lib/data/sidebarData";
+import { LayoutDashboard, FolderTree, Utensils, ArrowLeft } from "lucide-react";
 
 export default function Sidebar() {
-    const pathname = usePathname();
-    return (
-        <aside className="w-64 h-screen flex flex-col p-4 border-r border-gray-200 bg-white">
-            <div className="flex gap-3 mb-10 items-center">
-                <div>
-                    <Image
-                        src='/kopkit/LogoMain.png'
-                        alt="Kopkit"
-                        width={50}
-                        height={50}
-                    />
-                </div>
+  const pathname = usePathname();
 
-                <div className="flex flex-col">
-                    <h1 className="font-bold text-xl">
-                        Admin KOPKIT
-                    </h1>
-                    <p className="font-semibold text-sm text-gray-500">
-                        Coffee Operational
-                    </p>
-                </div>
-            </div>
+  const getIcon = (menu: string) => {
+    if (menu === "dashboard") return LayoutDashboard;
+    if (menu === "categories") return FolderTree;
+    return Utensils;
+  };
 
-            <div className="flex flex-col gap-2">
-                {sidebarData.map((data, idx) => {
-                    const IconComponents = iconMap[data.icon]
-                    const targetPath = `/admins/${data.menu}`.toLowerCase();
-                    const isActivate = pathname.toLowerCase() === targetPath || (data.menu === "dashboard" && pathname.toLowerCase() === "/admins");
-                    return (
-                        <Link
-                            key={idx}
-                            href={`/admins/${data.menu}`}
-                            className={`flex items-center gap-3 px-4 py-3 border-l-4 transition-all ${isActivate
-                                ? "border-black bg-gray-100 text-gray-900 font-semibold"
-                                : "border-transparent text-gray-500 hover:bg-gray-50 hover:text-gray-900"
-                                }`}
-                        >
-                            {IconComponents && <IconComponents className="text-lg" />}
-                            <span className="capitalize">{data.menu}</span>
-                        </Link>
-                    )
-                })}
-            </div>
+  return (
+    <div className="w-full bg-white border border-[#E8E8E8] rounded-xl p-3 shadow-xs flex flex-col gap-2.5">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-1.5">
+          <span className="text-xs font-semibold text-[#1E1E1E] uppercase tracking-wide">
+            Admin Panel
+          </span>
+        </div>
+        <Link
+          href="/"
+          className="text-xs text-[#707070] hover:text-[#1E1E1E] flex items-center gap-1 min-h-[32px] px-1"
+        >
+          <ArrowLeft className="w-3.5 h-3.5" /> Beranda
+        </Link>
+      </div>
 
+      <div className="flex gap-1.5 overflow-x-auto no-scrollbar">
+        {sidebarData.map((data, idx) => {
+          const IconComp = getIcon(data.menu);
+          const targetPath = `/admins/${data.menu}`.toLowerCase();
+          const isActive =
+            pathname.toLowerCase() === targetPath ||
+            (data.menu === "dashboard" && pathname.toLowerCase() === "/admins");
 
-            <div className="flex items-center gap-3 justify-center p-2 border-t border-gray-200 mt-auto cursor-pointer hover:bg-gray-50 rounded-xl transition-all">
-                <IoMdExit className="text-red-800 text-xl" />
-                <h1 className="font-semibold text-gray-700">Exit</h1>
-            </div>
-
-        </aside>
-    )
+          return (
+            <Link
+              key={idx}
+              href={`/admins/${data.menu}`}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium capitalize whitespace-nowrap transition active:scale-98 min-h-[36px] ${
+                isActive
+                  ? "bg-[#1E1E1E] text-white shadow-xs"
+                  : "bg-[#F7F7F7] text-[#707070] hover:bg-[#E8E8E8] hover:text-[#1E1E1E] border border-[#E8E8E8]"
+              }`}
+            >
+              <IconComp className="w-3.5 h-3.5" />
+              <span>{data.menu}</span>
+            </Link>
+          );
+        })}
+      </div>
+    </div>
+  );
 }

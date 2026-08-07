@@ -4,7 +4,7 @@ export const takeuswithyouData: takeuswithyouInterface[] = [
     {
         image: "/kopkit/takuswithyou1.png",
         title: "CATERING",
-        description: "Kamu bisa membawa KopKit dalam acara kantor atau selebrasi pribadi kamu",
+        description: "Kamu bisa membawa kopi dalam acara kantor atau selebrasi pribadi kamu",
     },
     {
         image: "/kopkit/takeuswithyou2.png",

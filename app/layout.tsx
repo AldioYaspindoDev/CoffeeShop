@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
+import MobileAppShell from "@/components/ui/mobileAppShell";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,19 +21,30 @@ const projectNote = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "KOPKIT",
-  description: "KOPKIT - Your Digital Workspace Haven",
+  title: "COFFEE",
+  description: "Your Digital Workspace & Artisanal Coffee Experience App",
   manifest: "/manifest.json",
   icons: {
-    icon: "/kopkit/icon.webp",
-    apple: "/kopkit/icon.webp",
+    icon: "/kopkit/LogoMain.png",
+    shortcut: "/kopkit/LogoMain.png",
+    apple: "/kopkit/LogoMain.png",
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "COFFEE",
+  },
+  formatDetection: {
+    telephone: false,
   },
 };
 
-export const viewport = {
-  themeColor: "#1E1E1E",
+export const viewport: Viewport = {
+  themeColor: "#FFFFFF",
   width: "device-width",
   initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
   viewportFit: "cover",
 };
 
@@ -43,10 +55,12 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="id"
       className={`${geistSans.variable} ${geistMono.variable} ${projectNote.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-dvh bg-[#F7F7F7] text-[#1E1E1E]">
+        <MobileAppShell>{children}</MobileAppShell>
+      </body>
     </html>
   );
 }

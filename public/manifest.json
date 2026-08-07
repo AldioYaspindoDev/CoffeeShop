@@ -1,12 +1,14 @@
 {
-  "name": "KopKit",
-  "short_name": "KopKit",
-  "description": "Your Digital Workspace Haven",
+  "name": "COFFEE - Digital Workspace & Coffee",
+  "short_name": "COFFEE",
+  "description": "Your digital workspace & artisanal coffee experience app.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#FFF5E9",
-  "theme_color": "#1E1E1E",
-  "orientation": "portrait-primary",
+  "background_color": "#FFFFFF",
+  "theme_color": "#FFFFFF",
+  "orientation": "portrait",
+  "scope": "/",
+  "categories": ["lifestyle", "food", "productivity"],
   "icons": [
     {
       "src": "/kopkit/LogoMain.png",
@@ -19,6 +21,12 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    },
+    {
+      "src": "/kopkit/icon.webp",
+      "sizes": "512x512",
+      "type": "image/webp",
+      "purpose": "any"
     }
   ]
 }

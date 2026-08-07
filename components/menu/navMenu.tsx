@@ -1,33 +1,34 @@
-"use client"
+"use client";
 
-import { categoryData } from "@/lib/data/categoryData"
+import React from "react";
+import { categoryData } from "@/lib/data/categoryData";
 
 interface NavMenuProps {
-    selectedCategory: string
-    setSelectedCategory: (category: string) => void
+  selectedCategory: string;
+  setSelectedCategory: (category: string) => void;
 }
 
 export default function NavMenu({ selectedCategory, setSelectedCategory }: NavMenuProps) {
-    return (
-        <section className="py-6 px-4 md:px-20 bg-white">
-            <div className="flex flex-wrap gap-3 sm:gap-4 items-center justify-center max-w-4xl mx-auto">
-                {categoryData.map((data, idx) => {
-                    const isActive = selectedCategory === data.name
-                    return (
-                        <button
-                            key={idx}
-                            onClick={() => setSelectedCategory(data.name)}
-                            className={`rounded-full px-6 py-2.5 text-sm sm:text-base font-semibold tracking-wide transition-all duration-300 ${
-                                isActive
-                                    ? "bg-black text-white shadow-md transform scale-105"
-                                    : "bg-gray-100 hover:bg-gray-200 text-gray-700"
-                            }`}
-                        >
-                            {data.name}
-                        </button>
-                    )
-                })}
-            </div>
-        </section>
-    )
+  return (
+    <section className="px-4 py-2 sticky top-[53px] z-30 bg-white/95 backdrop-blur-xs border-b border-[#E8E8E8]">
+      <div className="flex gap-1.5 overflow-x-auto no-scrollbar py-1">
+        {categoryData.map((data, idx) => {
+          const isActive = selectedCategory === data.name;
+          return (
+            <button
+              key={idx}
+              onClick={() => setSelectedCategory(data.name)}
+              className={`rounded-lg px-3.5 py-1.5 text-xs font-medium whitespace-nowrap transition active:scale-98 min-h-[36px] flex items-center justify-center shrink-0 ${
+                isActive
+                  ? "bg-[#1E1E1E] text-white shadow-xs"
+                  : "bg-[#F7F7F7] hover:bg-[#E8E8E8] text-[#707070] border border-[#E8E8E8]"
+              }`}
+            >
+              {data.name}
+            </button>
+          );
+        })}
+      </div>
+    </section>
+  );
 }

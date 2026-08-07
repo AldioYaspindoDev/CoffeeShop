@@ -1,55 +1,46 @@
-import Button from "@/components/ui/button"
-import Image from "next/image"
+"use client";
+
+import React from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { MapPin } from "lucide-react";
 
 export default function HeroAbout() {
-    return (
-        <section className="bg-white">
-            <div className="flex mt-20 flex-col md:flex-row justify-between items-center px-6 py-16 md:py-24 md:px-20 gap-12 md:gap-16 max-w-[1400px] mx-auto">
-                {/* Left Side: Content Text */}
-                <div className="flex flex-col gap-6 md:gap-8 items-start text-left max-w-2xl w-full">
-                    <div>
-                        <span className="text-xs md:text-sm font-bold uppercase tracking-widest text-black/50 bg-gray-100 px-4 py-2 rounded-full">
-                            Cerita Kita
-                        </span>
-                    </div>
-                    <div>
-                        <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-black leading-tight">
-                            Tentang KOPKIT
-                        </h1>
-                    </div>
-                    <div className="text-gray-600 text-base md:text-lg leading-relaxed font-medium">
-                        <p>
-                            Di KopKit, kami percaya bahwa setiap tegukan kopi membawa cerita.
-                            Berawal dari keinginan sederhana untuk menciptakan ruang yang menjembatani
-                            kenyamanan rumah dan produktivitas kantor, KopKit hadir di tengah kesibukan
-                            kota sebagai <span className="text-black font-semibold">&#39;Your Digital Workspace Haven&#39;</span>.
-                        </p>
-                        <p className="mt-4">
-                            Kami tidak hanya menyajikan kopi berkualitas, tapi juga menyediakan
-                            atmosfer yang hangat untuk Anda berkreasi, berkolaborasi, dan bersantai.
-                        </p>
-                    </div>
-                    <div className="w-full md:w-auto pt-2">
-                        <Button className="w-full md:w-auto py-3 px-8 text-base">
-                            Explore Lokasi
-                        </Button>
-                    </div>
-                </div>
+  return (
+    <section className="px-4 pt-4 pb-2">
+      <div className="bg-white border border-[#E8E8E8] rounded-xl p-4 shadow-xs flex flex-col gap-3">
+        <h1 className="text-xl font-bold text-[#1E1E1E] tracking-tight">
+          Tentang COFFEE
+        </h1>
 
-                {/* Right Side: Hero Image */}
-                <div className="w-full max-w-[360px] sm:max-w-[450px] md:max-w-[500px] flex-shrink-0">
-                    <div className="relative aspect-square sm:aspect-[4/3] md:aspect-[1/1] w-full rounded-[40px] overflow-hidden shadow-2xl border border-gray-100">
-                        <Image
-                            src="/kopkit/HeroAbout.jpg"
-                            alt="Tentang Kopkit Workspace & Cafe"
-                            fill
-                            priority
-                            className="object-cover hover:scale-105 transition-transform duration-700"
-                            sizes="(max-width: 640px) 360px, (max-width: 768px) 450px, 500px"
-                        />
-                    </div>
-                </div>
-            </div>
-        </section>
-    )
+        <div className="relative w-full h-40 rounded-lg overflow-hidden border border-[#E8E8E8] bg-[#F7F7F7]">
+          <Image
+            src="/kopkit/HeroAbout.jpg"
+            alt="Tentang Coffee Workspace & Cafe"
+            fill
+            priority
+            className="object-cover"
+            sizes="400px"
+          />
+        </div>
+
+        <div className="text-[#707070] text-xs leading-relaxed space-y-2">
+          <p>
+            Di COFFEE, kami percaya bahwa setiap tegukan kopi membawa cerita. Berawal dari keinginan sederhana untuk menciptakan ruang produktif dan santai, COFFEE hadir sebagai <strong className="text-[#1E1E1E]">&apos;Your Digital Workspace Haven&apos;</strong>.
+          </p>
+          <p>
+            Kami menyajikan kopi berkualitas dari biji pilihan lokal dengan atmosfer yang hangat untuk berkreasi dan berkolaborasi.
+          </p>
+        </div>
+
+        <Link
+          href="/#location"
+          className="py-2.5 px-4 rounded-lg bg-[#1E1E1E] hover:bg-black text-white font-medium text-xs flex items-center justify-center gap-1.5 min-h-[40px] transition active:scale-98 shadow-xs"
+        >
+          <MapPin className="w-3.5 h-3.5" />
+          Jelajahi Lokasi Cabang
+        </Link>
+      </div>
+    </section>
+  );
 }

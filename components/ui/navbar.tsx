@@ -1,83 +1,150 @@
-"use client"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { navbarData } from "@/lib/data/navbarData"
-import Button from "@/components/ui/button"
-import Image from "next/image"
+"use client";
 
-import { useState } from "react"
-import { HiMenu, HiX } from "react-icons/hi"
+import React, { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
+import { ShoppingBag, ArrowLeft, Menu, X, PhoneCall } from "lucide-react";
 
 export default function Navbar() {
-    const [isOpen, setIsOpen] = useState(false)
-    const pathname = usePathname()
+  const pathname = usePathname();
+  const router = useRouter();
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
-    return (
-        <header className="fixed top-0 left-0 right-0 z-50 pt-3 sm:pt-5 px-8 sm:px-8">
-            <div className="mx-auto flex max-w-[1400px] flex-col md:flex-row md:items-center justify-between border-2 border-black bg-white p-2.5 px-8 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-3xl md:rounded-full text-black font-semibold">
-                
-                {/* Header Utama (Logo & Hamburger di Mobile) */}
-                <div className="flex items-center justify-between w-full md:w-auto">
-                    <div className="flex items-center">
-                        <Image
-                            width={65}
-                            height={65}
-                            src="/kopkit/LogoMain.png"
-                            alt="Logo KopKit"
-                        />
-                    </div>
-                    {/* Hamburger Button untuk Mobile */}
-                    <button 
-                        onClick={() => setIsOpen(!isOpen)} 
-                        className="md:hidden text-3xl focus:outline-none p-2"
-                        aria-label="Toggle Menu"
-                    >
-                        {isOpen ? <HiX /> : <HiMenu />}
-                    </button>
-                </div>
+  const isHome = pathname === "/";
+  const getPageTitle = () => {
+    if (pathname === "/") return "COFFEE";
+    if (pathname === "/menu") return "Menu";
+    if (pathname === "/about") return "Tentang Kami";
+    if (pathname.startsWith("/admins")) return "Admin Portal";
+    return "COFFEE";
+  };
 
-                {/* Navigation Links */}
-                <div className={`
-                    flex flex-col md:flex-row text-black items-start md:items-center gap-4 md:gap-2 
-                    bg-gray-50 md:bg-gray-100 border-2 border-black md:border-none rounded-2xl md:rounded-full 
-                    w-full md:w-auto overflow-hidden md:overflow-visible transition-all duration-300 ease-in-out
-                    ${isOpen 
-                        ? 'max-h-[300px] opacity-100 mt-4 p-4 px-4 border-2' 
-                        : 'max-h-0 opacity-0 mt-0 p-0 px-4 border-0 md:border-none pointer-events-none md:pointer-events-auto md:max-h-none md:opacity-100 md:p-1 md:px-2'
-                    }
-                `}>
-                    {navbarData.map((value, idx) => {
-                        const isActive = pathname === value.path
-                        return (
-                            <div key={idx} className="w-full md:w-auto">
-                                <Link
-                                    href={value.path}
-                                    onClick={() => setIsOpen(false)}
-                                    className={`block w-full md:w-auto rounded-xl md:rounded-full px-4 py-2 transition-all duration-300 ${
-                                        isActive 
-                                            ? "bg-[#1E1E1E] text-white" 
-                                            : "text-black/70 hover:bg-black/10 hover:text-black"
-                                    }`}
-                                >
-                                    {value.navigasi}
-                                </Link>
-                            </div>
-                        )
-                    })}
-                </div>
+  return (
+    <>
+      <header className="sticky top-0 z-40 w-full bg-white border-b border-[#E8E8E8] px-4 py-3 text-[#1E1E1E] flex items-center justify-between shadow-xs">
+        {/* Left: Back Button or Logo */}
+        <div className="flex items-center gap-2.5">
+          {!isHome ? (
+            <button
+              onClick={() => router.back()}
+              className="p-2 -ml-2 rounded-lg text-[#1E1E1E] hover:bg-[#F7F7F7] transition active:scale-98 min-w-[44px] min-h-[44px] flex items-center justify-center"
+              aria-label="Kembali"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </button>
+          ) : (
+            <Link href="/" className="flex items-center gap-2">
+              <div className="w-10 h-10 rounded-md overflow-hidden flex items-center justify-center shrink-0">
+                <Image
+                  src="/kopkit/LogoMain.png"
+                  alt="Coffee Logo"
+                  width={40}
+                  height={40}
+                  className="w-full h-full object-contain"
+                />
+              </div>
+            </Link>
+          )}
 
-                {/* Contact Button */}
-                <div className={`
-                    w-full md:w-auto overflow-hidden transition-all duration-300 ease-in-out
-                    ${isOpen 
-                        ? 'max-h-[100px] opacity-100 mt-4' 
-                        : 'max-h-0 opacity-0 mt-0 pointer-events-none md:pointer-events-auto md:max-h-none md:opacity-100 md:mt-0'
-                    }
-                `}>
-                    <Button onClick={() => alert("hello")} className="w-full md:w-auto py-3">Contact</Button>
-                </div>
+          <span className="font-semibold text-base tracking-tight text-[#1E1E1E]">
+            {getPageTitle()}
+          </span>
+        </div>
 
+        {/* Right Action Icons */}
+        <div className="flex items-center gap-1">
+          <Link
+            href="/menu"
+            className="p-2 rounded-lg text-[#1E1E1E] hover:bg-[#F7F7F7] transition active:scale-98 min-w-[44px] min-h-[44px] flex items-center justify-center relative"
+            aria-label="Pesan Menu"
+          >
+            <ShoppingBag className="w-5 h-5" />
+          </Link>
+
+          <button
+            onClick={() => setDrawerOpen(!drawerOpen)}
+            className="p-2 rounded-lg text-[#1E1E1E] hover:bg-[#F7F7F7] transition active:scale-98 min-w-[44px] min-h-[44px] flex items-center justify-center"
+            aria-label="Buka Menu Navigasi"
+          >
+            {drawerOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
+      </header>
+
+      {/* Quick Side Drawer / Modal Overlay */}
+      {drawerOpen && (
+        <div className="fixed inset-0 z-50 flex justify-center pointer-events-auto">
+          <div
+            className="absolute inset-0 bg-black/40"
+            onClick={() => setDrawerOpen(false)}
+          />
+
+          <div className="relative w-full max-w-md bg-white border-b border-[#E8E8E8] text-[#1E1E1E] p-5 rounded-b-2xl shadow-md flex flex-col gap-4 top-0">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E8E8E8]">
+              <div className="flex items-center gap-2">
+                <Image
+                  src="/kopkit/LogoMain.png"
+                  alt="Coffee Logo"
+                  width={28}
+                  height={28}
+                  className="rounded-md"
+                />
+                <span className="font-semibold text-[#1E1E1E] text-base">Navigasi</span>
+              </div>
+              <button
+                onClick={() => setDrawerOpen(false)}
+                className="p-2 text-[#707070] hover:text-[#1E1E1E] min-w-[44px] min-h-[44px] flex items-center justify-center"
+              >
+                <X className="w-5 h-5" />
+              </button>
             </div>
-        </header>
-    )
+
+            <div className="flex flex-col gap-1.5">
+              <Link
+                href="/"
+                onClick={() => setDrawerOpen(false)}
+                className={`px-4 py-3 rounded-xl text-sm font-medium transition flex items-center justify-between ${
+                  pathname === "/" ? "bg-[#F7F7F7] text-[#1E1E1E] font-semibold" : "text-[#707070] hover:bg-[#F7F7F7] hover:text-[#1E1E1E]"
+                }`}
+              >
+                <span>Beranda</span>
+                <span>→</span>
+              </Link>
+              <Link
+                href="/menu"
+                onClick={() => setDrawerOpen(false)}
+                className={`px-4 py-3 rounded-xl text-sm font-medium transition flex items-center justify-between ${
+                  pathname === "/menu" ? "bg-[#F7F7F7] text-[#1E1E1E] font-semibold" : "text-[#707070] hover:bg-[#F7F7F7] hover:text-[#1E1E1E]"
+                }`}
+              >
+                <span>Menu</span>
+                <span>→</span>
+              </Link>
+              <Link
+                href="/about"
+                onClick={() => setDrawerOpen(false)}
+                className={`px-4 py-3 rounded-xl text-sm font-medium transition flex items-center justify-between ${
+                  pathname === "/about" ? "bg-[#F7F7F7] text-[#1E1E1E] font-semibold" : "text-[#707070] hover:bg-[#F7F7F7] hover:text-[#1E1E1E]"
+                }`}
+              >
+                <span>Tentang Kami</span>
+                <span>→</span>
+              </Link>
+            </div>
+
+            <a
+              href="https://wa.me/6281234567890"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-2 w-full py-3 bg-[#1E1E1E] hover:bg-black text-white font-medium text-xs text-center rounded-xl flex items-center justify-center gap-2 min-h-[44px] transition active:scale-98"
+            >
+              <PhoneCall className="w-4 h-4" />
+              Hubungi via WhatsApp
+            </a>
+          </div>
+        </div>
+      )}
+    </>
+  );
 }
