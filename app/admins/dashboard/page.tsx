@@ -31,67 +31,63 @@ const trendMap: Record<string, { value: string; isUp: boolean }> = {
 
 export default function Dashboard() {
     return (
-        <section className="space-y-8">
+        <section className="space-y-4">
             {/* Header Section */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div className="space-y-1">
-                    <h1 className="font-bold text-3xl text-gray-900 tracking-tight">Dashboard Overview</h1>
-                    <p className="text-gray-500 text-sm">Monitoring operasional dan penjualan KOPKIT hari ini.</p>
+            <div className="flex items-start justify-between gap-3">
+                <div className="space-y-0.5">
+                    <h1 className="font-bold text-xl text-[#1E1E1E] tracking-tight">Dashboard</h1>
+                    <p className="text-[#707070] text-xs">Monitoring operasional hari ini.</p>
                 </div>
 
-                <div className="flex items-center gap-2 bg-white p-1 rounded-xl border border-gray-200 shadow-xs">
-                    <button className="px-4 py-2 text-xs font-semibold text-white bg-black rounded-lg transition-all shadow-xs cursor-pointer">
+                <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-[#E8E8E8] shadow-xs shrink-0">
+                    <button className="px-3 py-1.5 text-[11px] font-semibold text-white bg-[#1E1E1E] rounded-lg transition-all cursor-pointer">
                         Hari ini
                     </button>
-                    <button className="px-4 py-2 text-xs font-semibold text-gray-600 hover:text-gray-900 rounded-lg hover:bg-gray-50 transition-all cursor-pointer">
-                        7 Hari
+                    <button className="px-3 py-1.5 text-[11px] font-semibold text-[#707070] hover:text-[#1E1E1E] rounded-lg hover:bg-[#F7F7F7] transition-all cursor-pointer">
+                        7H
                     </button>
-                    <button className="px-4 py-2 text-xs font-semibold text-gray-600 hover:text-gray-900 rounded-lg hover:bg-gray-50 transition-all cursor-pointer">
-                        30 Hari
-                    </button>
-                    <div className="h-4 w-[1px] bg-gray-200 mx-1" />
-                    <button className="p-2 text-gray-500 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-all cursor-pointer">
-                        <FaRegCalendar className="text-sm" />
+                    <button className="px-3 py-1.5 text-[11px] font-semibold text-[#707070] hover:text-[#1E1E1E] rounded-lg hover:bg-[#F7F7F7] transition-all cursor-pointer">
+                        30H
                     </button>
                 </div>
             </div>
 
-            {/* Overview Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Overview Cards - 2 columns on mobile */}
+            <div className="grid grid-cols-2 gap-3">
                 {overviewData.map((data, idx) => {
                     const IconComponent = iconMap[data.icon];
                     const colors = colorMap[data.icon] || { bg: "bg-gray-50", text: "text-gray-600", border: "border-gray-100" };
                     const trend = trendMap[data.icon] || { value: "+0%", isUp: true };
 
                     return (
-                        <div key={idx} className="bg-white p-6 rounded-2xl border border-gray-200/80 shadow-xs hover:shadow-md hover:border-gray-300 transition-all duration-300 flex flex-col justify-between group">
+                        <div key={idx} className="bg-white p-4 rounded-xl border border-[#E8E8E8] shadow-xs flex flex-col gap-3">
                             <div className="flex items-start justify-between">
-                                <span className="text-xs font-bold text-gray-400 tracking-wider uppercase">
+                                <span className="text-[10px] font-semibold text-[#707070] uppercase tracking-wide leading-tight">
                                     {data.title}
                                 </span>
-                                <div className={`p-3 rounded-xl ${colors.bg} ${colors.text} border ${colors.border} transition-transform duration-300 group-hover:scale-110`}>
-                                    {IconComponent && <IconComponent className="text-xl" />}
+                                <div className={`p-2 rounded-lg ${colors.bg} ${colors.text} border ${colors.border}`}>
+                                    {IconComponent && <IconComponent className="text-sm" />}
                                 </div>
                             </div>
 
-                            <div className="mt-4 space-y-2">
-                                <h2 className="text-2xl font-bold text-gray-900 tracking-tight">
+                            <div className="space-y-1">
+                                <h2 className="text-lg font-bold text-[#1E1E1E] tracking-tight">
                                     {data.data}
                                 </h2>
-                                <div className="flex items-center gap-1.5 text-xs">
+                                <div className="flex items-center gap-1 text-[10px]">
                                     {data.icon !== "IoIosCafe" ? (
                                         <>
                                             {trend.isUp ? (
-                                                <FaArrowUp className="text-emerald-500" />
+                                                <FaArrowUp className="text-emerald-500 shrink-0" />
                                             ) : (
-                                                <FaArrowDown className="text-rose-500" />
+                                                <FaArrowDown className="text-rose-500 shrink-0" />
                                             )}
-                                            <span className={trend.isUp ? "text-emerald-600 font-medium" : "text-rose-600 font-medium"}>
+                                            <span className={`truncate ${trend.isUp ? "text-emerald-600 font-medium" : "text-rose-600 font-medium"}`}>
                                                 {trend.value}
                                             </span>
                                         </>
                                     ) : (
-                                        <span className="text-rose-600 font-semibold bg-rose-50 px-2 py-0.5 rounded">
+                                        <span className="text-rose-600 font-semibold bg-rose-50 px-1.5 py-0.5 rounded text-[10px]">
                                             {trend.value}
                                         </span>
                                     )}
@@ -102,126 +98,93 @@ export default function Dashboard() {
                 })}
             </div>
 
-            {/* Visual Sections */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Trend Pendapatan (Revenue Trend Chart) */}
-                <div className="lg:col-span-2 bg-white p-6 rounded-2xl border border-gray-200/80 shadow-xs flex flex-col justify-between">
+            {/* Trend Pendapatan Chart */}
+            <div className="bg-white p-4 rounded-xl border border-[#E8E8E8] shadow-xs">
+                <div className="flex justify-between items-center mb-4">
                     <div>
-                        <div className="flex justify-between items-center mb-6">
-                            <div>
-                                <h3 className="font-bold text-lg text-gray-900">Trend Pendapatan</h3>
-                                <p className="text-gray-500 text-xs mt-0.5">Analisis pendapatan 7 hari terakhir</p>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <span className="flex items-center gap-1 text-xs text-emerald-600 font-semibold bg-emerald-50 px-2 py-1 rounded-lg">
-                                    <IoMdTrendingUp /> +12.4%
-                                </span>
-                                <span className="text-xs text-gray-400 font-medium">Rata-rata: Rp1.8M</span>
-                            </div>
-                        </div>
-
-                        {/* Custom Modern SVG Chart Area */}
-                        <div className="relative h-64 w-full mt-4">
-                            <svg className="w-full h-full" viewBox="0 0 600 240" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <defs>
-                                    <linearGradient id="revenue-gradient" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="0%" stopColor="#10B981" stopOpacity="0.25" />
-                                        <stop offset="100%" stopColor="#10B981" stopOpacity="0.00" />
-                                    </linearGradient>
-                                </defs>
-
-                                {/* Grid Lines */}
-                                <line x1="40" y1="40" x2="580" y2="40" stroke="#F3F4F6" strokeDasharray="4 4" />
-                                <line x1="40" y1="90" x2="580" y2="90" stroke="#F3F4F6" strokeDasharray="4 4" />
-                                <line x1="40" y1="140" x2="580" y2="140" stroke="#F3F4F6" strokeDasharray="4 4" />
-                                <line x1="40" y1="190" x2="580" y2="190" stroke="#F3F4F6" strokeDasharray="4 4" />
-
-                                {/* Area under curve */}
-                                <path
-                                    d="M 40 190 Q 120 160 200 130 T 360 80 T 520 110 T 580 50 L 580 190 L 40 190 Z"
-                                    fill="url(#revenue-gradient)"
-                                />
-
-                                {/* Main Curve Line */}
-                                <path
-                                    d="M 40 190 Q 120 160 200 130 T 360 80 T 520 110 T 580 50"
-                                    stroke="#10B981"
-                                    strokeWidth="3.5"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                />
-
-                                {/* Data Nodes (Dots) */}
-                                <circle cx="40" cy="190" r="5" fill="#FFFFFF" stroke="#10B981" strokeWidth="2.5" />
-                                <circle cx="120" cy="172" r="5" fill="#FFFFFF" stroke="#10B981" strokeWidth="2.5" />
-                                <circle cx="200" cy="130" r="5" fill="#FFFFFF" stroke="#10B981" strokeWidth="2.5" />
-                                <circle cx="280" cy="115" r="5" fill="#FFFFFF" stroke="#10B981" strokeWidth="2.5" />
-                                <circle cx="360" cy="80" r="5" fill="#FFFFFF" stroke="#10B981" strokeWidth="2.5" />
-                                <circle cx="440" cy="98" r="5" fill="#FFFFFF" stroke="#10B981" strokeWidth="2.5" />
-                                <circle cx="520" cy="110" r="5" fill="#FFFFFF" stroke="#10B981" strokeWidth="2.5" />
-                                <circle cx="580" cy="50" r="6" fill="#10B981" stroke="#FFFFFF" strokeWidth="2.5" className="animate-pulse" />
-
-                                {/* X-Axis Labels */}
-                                <text x="40" y="220" fill="#9CA3AF" fontSize="10" textAnchor="middle" fontWeight="500">Sen</text>
-                                <text x="120" y="220" fill="#9CA3AF" fontSize="10" textAnchor="middle" fontWeight="500">Sel</text>
-                                <text x="200" y="220" fill="#9CA3AF" fontSize="10" textAnchor="middle" fontWeight="500">Rab</text>
-                                <text x="280" y="220" fill="#9CA3AF" fontSize="10" textAnchor="middle" fontWeight="500">Kam</text>
-                                <text x="360" y="220" fill="#9CA3AF" fontSize="10" textAnchor="middle" fontWeight="500">Jum</text>
-                                <text x="440" y="220" fill="#9CA3AF" fontSize="10" textAnchor="middle" fontWeight="500">Sab</text>
-                                <text x="520" y="220" fill="#9CA3AF" fontSize="10" textAnchor="middle" fontWeight="500">Min</text>
-
-                                {/* Y-Axis Labels */}
-                                <text x="30" y="44" fill="#9CA3AF" fontSize="10" textAnchor="end" fontWeight="500">Rp3M</text>
-                                <text x="30" y="94" fill="#9CA3AF" fontSize="10" textAnchor="end" fontWeight="500">Rp2M</text>
-                                <text x="30" y="144" fill="#9CA3AF" fontSize="10" textAnchor="end" fontWeight="500">Rp1M</text>
-                                <text x="30" y="194" fill="#9CA3AF" fontSize="10" textAnchor="end" fontWeight="500">0</text>
-                            </svg>
-                        </div>
+                        <h3 className="font-bold text-sm text-[#1E1E1E]">Trend Pendapatan</h3>
+                        <p className="text-[#707070] text-[11px] mt-0.5">7 hari terakhir</p>
                     </div>
+                    <span className="flex items-center gap-1 text-[11px] text-emerald-600 font-semibold bg-emerald-50 px-2 py-1 rounded-lg border border-emerald-100">
+                        <IoMdTrendingUp /> +12.4%
+                    </span>
                 </div>
 
-                {/* Menu Populer */}
-                <div className="bg-white p-6 rounded-2xl border border-gray-200/80 shadow-xs flex flex-col">
-                    <div className="mb-5">
-                        <h3 className="font-bold text-lg text-gray-900">Menu Populer</h3>
-                        <p className="text-gray-500 text-xs mt-0.5">Daftar produk paling laku terjual</p>
-                    </div>
+                <div className="relative h-48 w-full">
+                    <svg className="w-full h-full" viewBox="0 0 600 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="revenue-gradient" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stopColor="#10B981" stopOpacity="0.2" />
+                                <stop offset="100%" stopColor="#10B981" stopOpacity="0.00" />
+                            </linearGradient>
+                        </defs>
+                        <line x1="40" y1="20" x2="580" y2="20" stroke="#F3F4F6" strokeDasharray="4 4" />
+                        <line x1="40" y1="70" x2="580" y2="70" stroke="#F3F4F6" strokeDasharray="4 4" />
+                        <line x1="40" y1="120" x2="580" y2="120" stroke="#F3F4F6" strokeDasharray="4 4" />
+                        <line x1="40" y1="160" x2="580" y2="160" stroke="#F3F4F6" strokeDasharray="4 4" />
+                        <path d="M 40 160 Q 120 130 200 100 T 360 55 T 520 80 T 580 30 L 580 160 L 40 160 Z" fill="url(#revenue-gradient)" />
+                        <path d="M 40 160 Q 120 130 200 100 T 360 55 T 520 80 T 580 30" stroke="#10B981" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                        <circle cx="40" cy="160" r="4" fill="#FFFFFF" stroke="#10B981" strokeWidth="2" />
+                        <circle cx="200" cy="100" r="4" fill="#FFFFFF" stroke="#10B981" strokeWidth="2" />
+                        <circle cx="360" cy="55" r="4" fill="#FFFFFF" stroke="#10B981" strokeWidth="2" />
+                        <circle cx="520" cy="80" r="4" fill="#FFFFFF" stroke="#10B981" strokeWidth="2" />
+                        <circle cx="580" cy="30" r="5" fill="#10B981" stroke="#FFFFFF" strokeWidth="2" className="animate-pulse" />
+                        <text x="40" y="185" fill="#9CA3AF" fontSize="9" textAnchor="middle">Sen</text>
+                        <text x="120" y="185" fill="#9CA3AF" fontSize="9" textAnchor="middle">Sel</text>
+                        <text x="200" y="185" fill="#9CA3AF" fontSize="9" textAnchor="middle">Rab</text>
+                        <text x="280" y="185" fill="#9CA3AF" fontSize="9" textAnchor="middle">Kam</text>
+                        <text x="360" y="185" fill="#9CA3AF" fontSize="9" textAnchor="middle">Jum</text>
+                        <text x="440" y="185" fill="#9CA3AF" fontSize="9" textAnchor="middle">Sab</text>
+                        <text x="520" y="185" fill="#9CA3AF" fontSize="9" textAnchor="middle">Min</text>
+                        <text x="32" y="24" fill="#9CA3AF" fontSize="9" textAnchor="end">3M</text>
+                        <text x="32" y="74" fill="#9CA3AF" fontSize="9" textAnchor="end">2M</text>
+                        <text x="32" y="124" fill="#9CA3AF" fontSize="9" textAnchor="end">1M</text>
+                        <text x="32" y="164" fill="#9CA3AF" fontSize="9" textAnchor="end">0</text>
+                    </svg>
+                </div>
+            </div>
 
-                    <div className="flex-1 divide-y divide-gray-100 overflow-y-auto pr-1 max-h-[300px] scrollbar-thin">
-                        {menuData.slice(0, 5).map((data, idx) => (
-                            <div key={idx} className="flex items-center gap-4 py-3 first:pt-0 last:pb-0 hover:bg-gray-50/50 rounded-xl transition-all duration-200 px-2 -mx-2">
-                                <div className="relative h-12 w-12 rounded-xl overflow-hidden border border-gray-100 flex-shrink-0 bg-gray-50">
-                                    <Image
-                                        src={data.images}
-                                        alt={data.productName}
-                                        fill
-                                        sizes="48px"
-                                        className="object-cover"
-                                    />
+            {/* Menu Populer */}
+            <div className="bg-white p-4 rounded-xl border border-[#E8E8E8] shadow-xs">
+                <div className="mb-3">
+                    <h3 className="font-bold text-sm text-[#1E1E1E]">Menu Populer</h3>
+                    <p className="text-[#707070] text-[11px] mt-0.5">Produk paling laku terjual</p>
+                </div>
+
+                <div className="divide-y divide-[#F7F7F7]">
+                    {menuData.slice(0, 5).map((data, idx) => (
+                        <div key={idx} className="flex items-center gap-3 py-2.5 first:pt-0 last:pb-0">
+                            <div className="relative h-10 w-10 rounded-lg overflow-hidden border border-[#E8E8E8] flex-shrink-0 bg-[#F7F7F7]">
+                                <Image
+                                    src={data.images}
+                                    alt={data.productName}
+                                    fill
+                                    sizes="40px"
+                                    className="object-cover"
+                                />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-1">
+                                    <h4 className="font-semibold text-xs text-[#1E1E1E] truncate">{data.productName}</h4>
+                                    {data.isBestSeller && (
+                                        <span className="flex items-center gap-0.5 bg-amber-50 text-amber-600 text-[9px] font-bold px-1 py-0.5 rounded shrink-0">
+                                            <FaStar className="text-[7px]" /> Best
+                                        </span>
+                                    )}
                                 </div>
-                                <div className="flex-1 min-w-0">
-                                    <div className="flex items-center gap-1.5">
-                                        <h4 className="font-semibold text-sm text-gray-950 truncate">{data.productName}</h4>
-                                        {data.isBestSeller && (
-                                            <span className="flex items-center gap-0.5 bg-amber-50 text-amber-600 text-[10px] font-bold px-1.5 py-0.5 rounded-md">
-                                                <FaStar className="text-[8px]" /> Best
-                                            </span>
-                                        )}
-                                    </div>
-                                    <p className="text-xs text-gray-500 truncate mt-0.5">
-                                        {data.productDescription || data.productDestcription}
-                                    </p>
-                                </div>
-                                <div className="text-right flex-shrink-0">
-                                    <div className="font-bold text-sm text-gray-900">{data.productPricing}</div>
-                                    <div className="flex items-center justify-end gap-1 mt-0.5">
-                                        <span className={`h-1.5 w-1.5 rounded-full ${data.stock > 10 ? 'bg-emerald-500' : 'bg-amber-500'}`} />
-                                        <span className="text-[10px] text-gray-400 font-medium">Stok: {data.stock}</span>
-                                    </div>
+                                <p className="text-[10px] text-[#707070] truncate mt-0.5">
+                                    {data.productDescription || data.productDestcription}
+                                </p>
+                            </div>
+                            <div className="text-right flex-shrink-0">
+                                <div className="font-bold text-xs text-[#1E1E1E]">{data.productPricing}</div>
+                                <div className="flex items-center justify-end gap-0.5 mt-0.5">
+                                    <span className={`h-1.5 w-1.5 rounded-full ${data.stock > 10 ? 'bg-emerald-500' : 'bg-amber-500'}`} />
+                                    <span className="text-[9px] text-[#707070]">{data.stock}</span>
                                 </div>
                             </div>
-                        ))}
-                    </div>
+                        </div>
+                    ))}
                 </div>
             </div>
         </section>

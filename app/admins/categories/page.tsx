@@ -84,117 +84,117 @@ export default function Categories() {
     }
 
     return (
-        <section className="space-y-8">
+        <section className="space-y-4">
             {/* Header Section */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div className="space-y-1">
-                    <h1 className="font-bold text-3xl text-gray-900 tracking-tight">Categories Management</h1>
-                    <p className="text-gray-500 text-sm">Kelola kategori produk makanan, kopi, dan minuman KOPKIT.</p>
+            <div className="flex items-start justify-between gap-3">
+                <div className="space-y-0.5">
+                    <h1 className="font-bold text-xl text-[#1E1E1E] tracking-tight">Kategori</h1>
+                    <p className="text-[#707070] text-xs">Kelola kategori produk.</p>
                 </div>
 
-                <button onClick={()=> setIsModalOpen(true)} className="flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-black hover:bg-gray-800 rounded-xl transition-all shadow-sm hover:shadow-md cursor-pointer">
-                    <FiPlus className="text-lg" />
-                    Tambah Kategori
+                <button onClick={() => setIsModalOpen(true)} className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-white bg-[#1E1E1E] hover:bg-black rounded-xl transition-all shadow-xs cursor-pointer shrink-0">
+                    <FiPlus className="text-sm" />
+                    Tambah
                 </button>
             </div>
 
             {/* Filter and Search Bar */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-between items-center bg-white p-4 rounded-2xl border border-gray-200/80 shadow-xs">
-                <div className="relative w-full sm:w-80">
-                    <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-base" />
+            <div className="flex gap-2 items-center bg-white p-3 rounded-xl border border-[#E8E8E8] shadow-xs">
+                <div className="relative flex-1">
+                    <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-[#707070] text-sm" />
                     <input
                         type="text"
                         placeholder="Cari kategori..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 text-sm bg-gray-50 hover:bg-gray-100/50 focus:bg-white border border-gray-200 focus:border-black rounded-xl outline-hidden transition-all placeholder:text-gray-400"
+                        className="w-full pl-9 pr-3 py-2 text-xs bg-[#F7F7F7] border border-[#E8E8E8] focus:border-[#1E1E1E] rounded-lg outline-hidden transition-all placeholder:text-[#707070]"
                     />
                 </div>
 
-                <div className="text-xs font-semibold text-gray-500 bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-100">
-                    Total: <span className="text-gray-900 font-bold">{filteredCategories.length} Kategori</span>
+                <div className="text-[11px] font-semibold text-[#707070] bg-[#F7F7F7] px-2.5 py-2 rounded-lg border border-[#E8E8E8] shrink-0 whitespace-nowrap">
+                    {filteredCategories.length} Kategori
                 </div>
             </div>
 
             {/* Category Content */}
             {loading ? (
                 /* Skeleton Loader */
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-2 gap-3">
                     {[1, 2, 3, 4].map((n) => (
-                        <div key={n} className="bg-white p-6 rounded-2xl border border-gray-200/80 shadow-xs animate-pulse space-y-4">
+                        <div key={n} className="bg-white p-4 rounded-xl border border-[#E8E8E8] shadow-xs animate-pulse space-y-3">
                             <div className="flex justify-between items-start">
-                                <div className="w-12 h-12 bg-gray-200 rounded-xl" />
-                                <div className="w-14 h-5 bg-gray-200 rounded-lg" />
+                                <div className="w-10 h-10 bg-[#E8E8E8] rounded-lg" />
+                                <div className="w-8 h-4 bg-[#E8E8E8] rounded" />
                             </div>
-                            <div className="space-y-2">
-                                <div className="w-2/3 h-6 bg-gray-200 rounded-md" />
-                                <div className="w-1/2 h-4 bg-gray-200 rounded-md" />
+                            <div className="space-y-1.5">
+                                <div className="w-2/3 h-4 bg-[#E8E8E8] rounded" />
+                                <div className="w-1/2 h-3 bg-[#E8E8E8] rounded" />
                             </div>
-                            <div className="pt-4 border-t border-gray-100 flex justify-end gap-2">
-                                <div className="w-8 h-8 bg-gray-200 rounded-lg" />
-                                <div className="w-8 h-8 bg-gray-200 rounded-lg" />
+                            <div className="pt-3 border-t border-[#F7F7F7] flex justify-end gap-1">
+                                <div className="w-7 h-7 bg-[#E8E8E8] rounded-lg" />
+                                <div className="w-7 h-7 bg-[#E8E8E8] rounded-lg" />
                             </div>
                         </div>
                     ))}
                 </div>
             ) : filteredCategories.length === 0 ? (
                 /* Empty State */
-                <div className="flex flex-col items-center justify-center py-16 bg-white rounded-2xl border border-gray-200/80 shadow-xs text-center p-6">
-                    <div className="p-4 bg-gray-50 rounded-full border border-gray-100 mb-4">
-                        <FiFolder className="text-3xl text-gray-400" />
+                <div className="flex flex-col items-center justify-center py-12 bg-white rounded-xl border border-[#E8E8E8] shadow-xs text-center p-6">
+                    <div className="p-3 bg-[#F7F7F7] rounded-full border border-[#E8E8E8] mb-3">
+                        <FiFolder className="text-2xl text-[#707070]" />
                     </div>
-                    <h3 className="font-semibold text-gray-900 text-lg">Kategori Tidak Ditemukan</h3>
-                    <p className="text-gray-500 text-sm mt-1 max-w-xs">Tidak ada kategori yang cocok dengan pencarian {searchQuery}.</p>
+                    <h3 className="font-semibold text-[#1E1E1E] text-sm">Kategori Tidak Ditemukan</h3>
+                    <p className="text-[#707070] text-xs mt-1 max-w-xs">Tidak ada kategori yang cocok dengan pencarian {searchQuery}.</p>
                 </div>
             ) : (
                 /* Categories Grid */
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-2 gap-3">
                     {filteredCategories.map((data, idx) => {
                         const styleClass = getColorClass(idx);
                         return (
-                            <div key={data.id} className="bg-white p-6 rounded-2xl border border-gray-200/80 shadow-xs hover:shadow-md hover:border-gray-300 transition-all duration-300 flex flex-col justify-between group">
+                            <div key={data.id} className="bg-white p-4 rounded-xl border border-[#E8E8E8] shadow-xs flex flex-col justify-between">
                                 <div>
                                     <div className="flex items-start justify-between">
-                                        <div className={`p-3 rounded-xl border ${data.icon ? 'bg-gray-50 border-gray-100' : styleClass} transition-transform duration-300 group-hover:scale-105`}>
+                                        <div className={`p-2.5 rounded-lg border ${data.icon ? 'bg-[#F7F7F7] border-[#E8E8E8]' : styleClass}`}>
                                             {data.icon ? (
                                                 <Image
                                                     src={data.icon}
                                                     alt={data.name}
-                                                    width={32}
-                                                    height={32}
+                                                    width={24}
+                                                    height={24}
                                                     className="object-contain"
                                                 />
                                             ) : (
-                                                <FiFolder className="text-xl" />
+                                                <FiFolder className="text-base" />
                                             )}
                                         </div>
-                                        <span className="text-xs font-bold text-gray-400 bg-gray-50 px-2 py-1 rounded-md border border-gray-100 uppercase">
-                                            ID: {data.id}
+                                        <span className="text-[9px] font-bold text-[#707070] bg-[#F7F7F7] px-1.5 py-0.5 rounded border border-[#E8E8E8] uppercase">
+                                            #{data.id}
                                         </span>
                                     </div>
 
-                                    <div className="mt-5 space-y-1">
-                                        <h2 className="text-xl font-bold text-gray-900 tracking-tight group-hover:text-black transition-colors">
+                                    <div className="mt-3 space-y-0.5">
+                                        <h2 className="text-sm font-bold text-[#1E1E1E] leading-tight">
                                             {data.name}
                                         </h2>
-                                        <p className="text-xs text-gray-500 font-medium">
-                                            {getProductCount(data.id)} Produk terhubung
+                                        <p className="text-[10px] text-[#707070]">
+                                            {getProductCount(data.id)} Produk
                                         </p>
                                     </div>
                                 </div>
 
-                                <div className="mt-6 pt-4 border-t border-gray-100/80 flex items-center justify-between">
-                                    <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-2xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100">
+                                <div className="mt-4 pt-3 border-t border-[#F7F7F7] flex items-center justify-between">
+                                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100">
                                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                                         Aktif
                                     </span>
 
-                                    <div className="flex gap-1">
-                                        <button className="p-2 text-gray-500 hover:text-black hover:bg-gray-50 rounded-lg transition-all cursor-pointer" title="Edit Kategori">
-                                            <FiEdit3 className="text-sm" />
+                                    <div className="flex gap-0.5">
+                                        <button className="p-1.5 text-[#707070] hover:text-[#1E1E1E] hover:bg-[#F7F7F7] rounded-lg transition-all cursor-pointer">
+                                            <FiEdit3 className="text-xs" />
                                         </button>
-                                        <button className="p-2 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all cursor-pointer" title="Hapus Kategori">
-                                            <FiTrash2 className="text-sm" />
+                                        <button className="p-1.5 text-[#707070] hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all cursor-pointer">
+                                            <FiTrash2 className="text-xs" />
                                         </button>
                                     </div>
                                 </div>

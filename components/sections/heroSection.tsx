@@ -1,11 +1,24 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight, MapPin } from "lucide-react";
+import { heroImageData } from "@/lib/data/heroImageData";
 
 export default function HeroSection() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (!heroImageData || heroImageData.length === 0) return;
+    
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % heroImageData.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section className="px-4 pt-4 pb-4 flex flex-col gap-4">
       {/* Clean Mobile Card Banner */}
@@ -25,15 +38,38 @@ export default function HeroSection() {
           </p>
         </div>
 
-        {/* Hero Image */}
-        <div className="relative w-full h-44 rounded-lg overflow-hidden border border-[#E8E8E8] bg-[#F7F7F7] my-1">
-          <Image
-            src="/kopkit/HeroImage.png"
-            alt="COFFEE Coffee"
-            fill
-            className="object-cover"
-            priority
-          />
+        {/* Hero Image Auto Carousel */}
+        <div className="relative w-full h-72 rounded-lg overflow-hidden border border-[#E8E8E8] bg-[#F7F7F7] my-1">
+          <div
+            className="flex w-full h-full transition-transform duration-700 ease-in-out"
+            style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+          >
+            {heroImageData.map((data, idx) => (
+              <div key={idx} className="relative w-full h-full shrink-0">
+                <Image
+                  src={data.image}
+                  alt={`COFFEE Slide ${idx + 1}`}
+                  fill
+                  className="object-cover"
+                  priority={idx === 0}
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* Carousel Indicators / Dots */}
+          <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 z-10">
+            {heroImageData.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentIndex(idx)}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  currentIndex === idx ? "w-5 bg-white shadow" : "w-1.5 bg-white/60"
+                }`}
+                aria-label={`Ke slide ${idx + 1}`}
+              />
+            ))}
+          </div>
         </div>
 
         {/* Action Buttons */}

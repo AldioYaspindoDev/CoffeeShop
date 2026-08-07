@@ -25,9 +25,9 @@ export const metadata: Metadata = {
   description: "Your Digital Workspace & Artisanal Coffee Experience App",
   manifest: "/manifest.json",
   icons: {
-    icon: "/kopkit/LogoMain.png",
-    shortcut: "/kopkit/LogoMain.png",
-    apple: "/kopkit/LogoMain.png",
+    icon: "/kopkit/icon.webp",
+    shortcut: "/kopkit/icon.webp",
+    apple: "/kopkit/icon.webp",
   },
   appleWebApp: {
     capable: true,
