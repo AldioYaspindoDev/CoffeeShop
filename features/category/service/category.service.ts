@@ -1,5 +1,5 @@
 import { CategoryRepository } from "../repository/category.repository";
-import { CreatedCategoryDto } from "../validators/category.validators";
+import { CreatedCategoryDto, UpdatedCategoryDto } from "../validators/category.validators";
 
 const repository = new CategoryRepository();
 
@@ -11,5 +11,13 @@ export class CategoryService{
 
     async createdCategory(data: CreatedCategoryDto) {
         return repository.created(data);
+    }
+
+    async updatedCategory(data: UpdatedCategoryDto, id: string){
+        return repository.updated(data, id);
+    }
+
+    async deletedCategory(id: string){
+        return repository.deleted(id);
     }
 }

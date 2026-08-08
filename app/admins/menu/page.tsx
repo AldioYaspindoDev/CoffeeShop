@@ -4,7 +4,6 @@ import { categoryData } from "@/lib/data/categoryData"
 import { useEffect, useState } from "react"
 import { menuInterface } from "@/lib/types/menuInterface"
 import { menuData } from "@/lib/data/menuData"
-import Image from "next/image"
 import { FiPlus, FiSearch, FiEdit3, FiTrash2, FiCoffee, FiInbox } from "react-icons/fi"
 import { FaStar } from "react-icons/fa"
 import MenuModal from "@/components/modal/menuModal"
@@ -15,6 +14,7 @@ export default function MenuManagement() {
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("Semua");
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [editMenuData, setEditMenuData] = useState<menuInterface | null>(null);
 
     useEffect(() => {
         const handleGetData = async () => {
@@ -33,6 +33,45 @@ export default function MenuManagement() {
         handleGetData();
     }, []);
 
+    const handleOpenEdit = (item: menuInterface) => {
+        setEditMenuData(item);
+        setIsModalOpen(true);
+    };
+
+    const handleModalClose = () => {
+        setEditMenuData(null);
+        setIsModalOpen(false);
+    };
+
+    const handleFormSubmit = async (data: Omit<menuInterface, 'id'>) => {
+        if (editMenuData) {
+            // Edit Mode (PATCH)
+            try {
+                const res = await fetch(`/api/menu/${editMenuData.id}`, {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(data),
+                });
+                if (res.ok) {
+                    const updatedMenuItem = await res.json();
+                    setMenu((prev) =>
+                        prev.map((item) => (item.id === editMenuData.id ? updatedMenuItem : item))
+                    );
+                } else {
+                    console.error("Gagal memperbarui menu");
+                }
+            } catch (error) {
+                console.error("Error updating menu:", error);
+            }
+        } else {
+            // Add Mode (POST)
+            await handleAddMenu(data);
+        }
+        handleModalClose();
+    };
+
     const handleAddMenu = async (data: Omit<menuInterface, 'id'>) => {
         try {
             const res = await fetch("/api/menu", {
@@ -50,7 +89,6 @@ export default function MenuManagement() {
             }
         } catch (error) {
             console.error("Error adding menu:", error);
-            // Fallback ke data lokal jika API offline
             const newMock: menuInterface = {
                 id: (menu.length + 1).toString(),
                 categoryId: data.categoryId,
@@ -64,6 +102,23 @@ export default function MenuManagement() {
                 isBestSeller: data.isBestSeller,
             };
             setMenu((prev) => [...prev, newMock]);
+        }
+    };
+
+    const handleDeleteMenu = async (id: string) => {
+        if (!confirm("Apakah Anda yakin ingin menghapus menu ini?")) return;
+
+        try {
+            const res = await fetch(`/api/menu/${id}`, {
+                method: "DELETE",
+            });
+            if (res.ok) {
+                setMenu((prev) => prev.filter((item) => item.id !== id));
+            } else {
+                console.error("Gagal menghapus menu");
+            }
+        } catch (error) {
+            console.error("Error deleting menu:", error);
         }
     };
 
@@ -228,26 +283,34 @@ export default function MenuManagement() {
                                                 {data.isAvailable ? `Stok: ${data.stock}` : "Habis"}
                                             </span>
                                             <div className="flex gap-0.5">
-                                                <button className="p-1 text-[#707070] hover:text-[#1E1E1E] hover:bg-[#F7F7F7] rounded transition-all cursor-pointer">
+                                                <button 
+                                                    onClick={() => handleOpenEdit(data)}
+                                                    className="p-1 text-[#707070] hover:text-[#1E1E1E] hover:bg-[#F7F7F7] rounded transition-all cursor-pointer"
+                                                >
                                                     <FiEdit3 className="text-xs" />
                                                 </button>
-                                                <button className="p-1 text-[#707070] hover:text-rose-600 hover:bg-rose-50 rounded transition-all cursor-pointer">
+                                                <button 
+                                                    onClick={() => data.id && handleDeleteMenu(data.id)}
+                                                    className="p-1 text-[#707070] hover:text-rose-600 hover:bg-rose-50 rounded transition-all cursor-pointer"
+                                                >
                                                     <FiTrash2 className="text-xs" />
                                                 </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                             </div>
                         )
                     })}
                 </div>
             )}
 
             <MenuModal
+                key={editMenuData ? editMenuData.id : "new-menu"}
                 isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                onSubmit={handleAddMenu}
+                onClose={handleModalClose}
+                onSubmit={handleFormSubmit}
+                initialData={editMenuData}
             />
         </section>
     );

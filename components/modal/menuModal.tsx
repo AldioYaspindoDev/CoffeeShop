@@ -17,20 +17,35 @@ interface MenuModalProps {
         isAvailable: boolean;
         isBestSeller: boolean;
     }) => void;
+    initialData?: {
+        categoryId?: string;
+        category: categoryInterface | string;
+        productName: string;
+        productDescription?: string;
+        images: string;
+        productPricing: number | string;
+        stock: number;
+        isAvailable: boolean;
+        isBestSeller: boolean;
+    } | null;
 }
 
-export default function MenuModal({ isOpen, onClose, onSubmit }: MenuModalProps) {
+export default function MenuModal({ isOpen, onClose, onSubmit, initialData }: MenuModalProps) {
     const [categories, setCategories] = useState<categoryInterface[]>([]);
     
-    const [categoryId, setCategoryId] = useState("");
-    const [categoryName, setCategoryName] = useState("");
-    const [productName, setProductName] = useState("");
-    const [productDescription, setProductDescription] = useState("");
-    const [images, setImages] = useState("");
-    const [productPricing, setProductPricing] = useState("");
-    const [stock, setStock] = useState("");
-    const [isAvailable, setIsAvailable] = useState(true);
-    const [isBestSeller, setIsBestSeller] = useState(false);
+    const [categoryId, setCategoryId] = useState(initialData?.categoryId || "");
+    const [categoryName, setCategoryName] = useState(
+        initialData 
+            ? (typeof initialData.category === "string" ? initialData.category : initialData.category?.name || "")
+            : ""
+    );
+    const [productName, setProductName] = useState(initialData?.productName || "");
+    const [productDescription, setProductDescription] = useState(initialData?.productDescription || "");
+    const [images, setImages] = useState(initialData?.images || "");
+    const [productPricing, setProductPricing] = useState(initialData?.productPricing?.toString() || "");
+    const [stock, setStock] = useState(initialData?.stock?.toString() || "");
+    const [isAvailable, setIsAvailable] = useState(initialData ? initialData.isAvailable : true);
+    const [isBestSeller, setIsBestSeller] = useState(initialData ? initialData.isBestSeller : false);
 
     // Fetch categories when modal opens to populate the dropdown
     useEffect(() => {
@@ -40,15 +55,17 @@ export default function MenuModal({ isOpen, onClose, onSubmit }: MenuModalProps)
                     const res = await fetch("/api/category");
                     const data = await res.json();
                     setCategories(data);
-                    if (data.length > 0) {
+                    
+                    // Set default category only if not in edit mode
+                    if (data.length > 0 && !initialData) {
                         setCategoryId(data[0].id);
                         setCategoryName(data[0].name);
                     }
                 } catch (error) {
                     console.error("Gagal mengambil kategori:", error);
-                    setCategories(categoryData.filter(c => c.id !== "all"));
                     const fallback = categoryData.filter(c => c.id !== "all");
-                    if (fallback.length > 0) {
+                    setCategories(fallback);
+                    if (fallback.length > 0 && !initialData) {
                         setCategoryId(fallback[0].id);
                         setCategoryName(fallback[0].name);
                     }
@@ -56,7 +73,7 @@ export default function MenuModal({ isOpen, onClose, onSubmit }: MenuModalProps)
             };
             fetchCategories();
         }
-    }, [isOpen]);
+    }, [isOpen, initialData]);
 
     if (!isOpen) return null;
 
@@ -106,8 +123,12 @@ export default function MenuModal({ isOpen, onClose, onSubmit }: MenuModalProps)
                 {/* Header */}
                 <div className="flex justify-between items-center pb-4 border-b border-gray-100">
                     <div>
-                        <h2 className="text-xl font-bold text-gray-900 tracking-tight">Tambah Menu Baru</h2>
-                        <p className="text-xs text-gray-500 mt-0.5">Kelola produk yang akan dipasarkan di KOPKIT.</p>
+                        <h2 className="text-xl font-bold text-gray-900 tracking-tight">
+                            {initialData ? "Edit Menu Produk" : "Tambah Menu Baru"}
+                        </h2>
+                        <p className="text-xs text-gray-500 mt-0.5">
+                            {initialData ? "Perbarui informasi produk KOPKIT Anda." : "Kelola produk yang akan dipasarkan di KOPKIT."}
+                        </p>
                     </div>
                     <button
                         onClick={onClose}
@@ -283,7 +304,7 @@ export default function MenuModal({ isOpen, onClose, onSubmit }: MenuModalProps)
                             type="submit"
                             className="px-5 py-2.5 text-sm font-semibold text-white bg-black hover:bg-gray-800 rounded-xl transition-all shadow-sm hover:shadow-md cursor-pointer"
                         >
-                            Simpan Menu
+                            {initialData ? "Simpan Perubahan" : "Simpan Menu"}
                         </button>
                     </div>
                 </form>

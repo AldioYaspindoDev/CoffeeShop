@@ -11,4 +11,7 @@ export const CreatedMenuSchema = z.object({
     isBestSeller: z.boolean()
 });
 
+export const UpdatedMenuSchema = CreatedMenuSchema.partial();
+
 export type CreatedMenuDto = z.infer<typeof CreatedMenuSchema>
+export type UpdatedMenuDto = z.infer<typeof UpdatedMenuSchema>

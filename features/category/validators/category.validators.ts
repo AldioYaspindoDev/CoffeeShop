@@ -5,4 +5,7 @@ export const CreatedCategorySchema = z.object({
     icon: z.string().optional()
 });
 
+export const UpdatedCategorySchema = CreatedCategorySchema.partial();
+
 export type CreatedCategoryDto = z.infer<typeof CreatedCategorySchema>
+export type UpdatedCategoryDto = z.infer<typeof UpdatedCategorySchema>

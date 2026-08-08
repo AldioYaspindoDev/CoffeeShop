@@ -1,5 +1,5 @@
 import { MenuRepository } from "../repository/menu.repository";
-import { CreatedMenuDto } from "../validators/menu.validator";
+import { CreatedMenuDto, UpdatedMenuDto } from "../validators/menu.validator";
 
 const repository = new MenuRepository();
 
@@ -11,6 +11,14 @@ export class MenuService {
 
     async createdMenu(data: CreatedMenuDto) {
         return repository.created(data)
+    }
+
+    async updatedMenu(data: UpdatedMenuDto, id: string){
+        return repository.updated(data, id)
+    }
+
+    async deletedMenu(id: string){
+        return repository.deleted(id);
     }
 }
 

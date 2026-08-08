@@ -12,6 +12,7 @@ export default function Categories() {
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState("");
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [editCategoryData, setEditCategoryData] = useState<categoryInterface | null>(null);
 
     useEffect(() => {
         const handleGetData = async () => {
@@ -30,6 +31,45 @@ export default function Categories() {
         handleGetData();
     }, []);
 
+    const handleOpenEdit = (item: categoryInterface) => {
+        setEditCategoryData(item);
+        setIsModalOpen(true);
+    };
+
+    const handleModalClose = () => {
+        setEditCategoryData(null);
+        setIsModalOpen(false);
+    };
+
+    const handleFormSubmit = async (data: { name: string; icon?: string }) => {
+        if (editCategoryData) {
+            // Edit Mode (PATCH)
+            try {
+                const res = await fetch(`/api/category/${editCategoryData.id}`, {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(data),
+                });
+                if (res.ok) {
+                    const updatedCategory = await res.json();
+                    setCategory((prev) =>
+                        prev.map((item) => (item.id === editCategoryData.id ? updatedCategory : item))
+                    );
+                } else {
+                    console.error("Gagal memperbarui kategori");
+                }
+            } catch (error) {
+                console.error("Error updating category:", error);
+            }
+        } else {
+            // Add Mode (POST)
+            await handleAddCategory(data);
+        }
+        handleModalClose();
+    };
+
     const handleAddCategory = async (data: { name: string; icon?: string }) => {
         try {
             const res = await fetch("/api/category", {
@@ -47,13 +87,32 @@ export default function Categories() {
             }
         } catch (error) {
             console.error("Error adding category:", error);
-            // Fallback to local state if API/Database is offline
             const newMock: categoryInterface = {
                 id: (category.length + 1).toString(),
                 name: data.name,
                 icon: data.icon,
             };
             setCategory((prev) => [...prev, newMock]);
+        }
+    };
+
+    const handleDeleteCategory = async (id: string) => {
+        if (!confirm("Apakah Anda yakin ingin menghapus kategori ini?")) return;
+
+        try {
+            const res = await fetch(`/api/category/${id}`, {
+                method: "DELETE",
+            });
+            const result = await res.json();
+            
+            if (res.ok) {
+                setCategory((prev) => prev.filter((item) => item.id !== id));
+            } else {
+                alert(result.message || "Gagal menghapus kategori");
+            }
+        } catch (error) {
+            console.error("Error deleting category:", error);
+            alert("Error: Gagal terhubung ke server untuk menghapus kategori");
         }
     };
 
@@ -168,9 +227,6 @@ export default function Categories() {
                                                 <FiFolder className="text-base" />
                                             )}
                                         </div>
-                                        <span className="text-[9px] font-bold text-[#707070] bg-[#F7F7F7] px-1.5 py-0.5 rounded border border-[#E8E8E8] uppercase">
-                                            #{data.id}
-                                        </span>
                                     </div>
 
                                     <div className="mt-3 space-y-0.5">
@@ -190,10 +246,16 @@ export default function Categories() {
                                     </span>
 
                                     <div className="flex gap-0.5">
-                                        <button className="p-1.5 text-[#707070] hover:text-[#1E1E1E] hover:bg-[#F7F7F7] rounded-lg transition-all cursor-pointer">
+                                        <button 
+                                            onClick={() => handleOpenEdit(data)}
+                                            className="p-1.5 text-[#707070] hover:text-[#1E1E1E] hover:bg-[#F7F7F7] rounded-lg transition-all cursor-pointer"
+                                        >
                                             <FiEdit3 className="text-xs" />
                                         </button>
-                                        <button className="p-1.5 text-[#707070] hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all cursor-pointer">
+                                        <button 
+                                            onClick={() => handleDeleteCategory(data.id)}
+                                            className="p-1.5 text-[#707070] hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all cursor-pointer"
+                                        >
                                             <FiTrash2 className="text-xs" />
                                         </button>
                                     </div>
@@ -205,9 +267,11 @@ export default function Categories() {
             )}
 
             <CategoryModal
+                key={editCategoryData ? editCategoryData.id : "new-category"}
                 isOpen={isModalOpen}
-                onClose={()=> setIsModalOpen(false)}
-                onSubmit={(data)=> handleAddCategory(data)}
+                onClose={handleModalClose}
+                onSubmit={handleFormSubmit}
+                initialData={editCategoryData}
             />
         </section>
     )
