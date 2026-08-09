@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import BottomNav from "./bottomNav";
-import InstallPrompt from "./installPrompt";
+import WhatsAppPrompt from "./whatsappPrompt";
 
 interface MobileAppShellProps {
   children: React.ReactNode;
@@ -34,8 +34,8 @@ export default function MobileAppShell({ children }: MobileAppShellProps) {
 
       {/* Main Mobile App Container */}
       <div className="w-full max-w-md min-h-dvh bg-white text-[#1E1E1E] border-x border-[#E8E8E8] shadow-sm relative flex flex-col pb-20 overflow-x-hidden">
-        {/* PWA Install Banner */}
-        <InstallPrompt />
+        {/* WhatsApp Prompt */}
+        <WhatsAppPrompt />
 
         {/* Dynamic Page Content */}
         <main className="flex-1 w-full flex flex-col">{children}</main>

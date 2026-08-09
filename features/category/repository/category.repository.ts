@@ -1,6 +1,5 @@
 import { prisma } from "@/lib/db/index"
 import { CreatedCategoryDto, UpdatedCategoryDto } from "../validators/category.validators"
-import { categoryInterface } from "@/lib/types/categoryInterface"
 
 export class CategoryRepository{
     async findAll(){

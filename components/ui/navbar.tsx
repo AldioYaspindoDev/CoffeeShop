@@ -31,7 +31,7 @@ export default function Navbar() {
               className="p-2 -ml-2 rounded-lg text-[#1E1E1E] hover:bg-[#F7F7F7] transition active:scale-98 min-w-[44px] min-h-[44px] flex items-center justify-center"
               aria-label="Kembali"
             >
-              <ArrowLeft className="w-5 h-5" />
+              <ArrowLeft className="w-6 h-6" />
             </button>
           ) : (
             <Link href="/" className="flex items-center gap-2">
@@ -59,7 +59,7 @@ export default function Navbar() {
             className="p-2 rounded-lg text-[#1E1E1E] hover:bg-[#F7F7F7] transition active:scale-98 min-w-[44px] min-h-[44px] flex items-center justify-center relative"
             aria-label="Pesan Menu"
           >
-            <ShoppingBag className="w-5 h-5" />
+            <ShoppingBag className="w-6 h-6" />
           </Link>
 
           <button
@@ -67,7 +67,7 @@ export default function Navbar() {
             className="p-2 rounded-lg text-[#1E1E1E] hover:bg-[#F7F7F7] transition active:scale-98 min-w-[44px] min-h-[44px] flex items-center justify-center"
             aria-label="Buka Menu Navigasi"
           >
-            {drawerOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {drawerOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
       </header>

@@ -20,6 +20,7 @@ model Menu {
   createdAt          DateTime @default(now()) @map("created_at")
   updatedAt          DateTime @default(now()) @map("updated_at")
   category           Category @relation(fields: [categoryId], references: [id])
+  orderItems         OrderItems[]
 
   @@map("menus")
 }
@@ -34,3 +35,81 @@ model Category {
 
   @@map("categories")
 }
+
+model User {
+  id         String   @id @default(uuid())
+  name       String
+  phone      String   @unique
+  isVerified Boolean  @default(false) @map("is_verified")
+  address    String?
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+  orders     Order[]
+  otps       Otp[]
+
+  @@map("users")
+}
+
+model Otp {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  code      String
+  expiredAt DateTime @map("expired_at")
+  isUsed    Boolean  @default(false) @map("is_used")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("otps")
+}
+
+enum OrderType {
+  DINE_IN
+  TAKEAWAY
+  DELIVERY
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PREPARING
+  READY
+  COMPLETED
+  CANCELLED
+}
+
+model Order {
+  id              String      @id @default(uuid())
+  orderNumber     String      @unique @map("order_number")
+  userId          String?     @map("user_id")
+  guestName       String?     @map("guest_name")
+  guestPhone      String?     @map("guest_phone")
+  orderType       OrderType   @map("order_type")
+  status          OrderStatus @default(PENDING)
+  deliveryAddress String?     @map("delivery_address")
+  totalPrice      Int         @map("total_price")
+  notes           String?
+  createdAt       DateTime    @default(now()) @map("created_at")
+  updatedAt       DateTime    @default(now()) @map("updated_at")
+
+  user  User?        @relation(fields: [userId], references: [id])
+  items OrderItems[]
+
+  @@map("orders")
+}
+
+model OrderItems {
+  id        String  @id @default(uuid())
+  orderId   String  @map("order_id")
+  menuId    String  @map("menu_id")
+  quantity  Int
+  unitPrice Int     @map("unit_price")
+  subTotal  Int     @map("sub_total")
+  notes     String?
+
+  order Order @relation(fields: [orderId], references: [id])
+  menu  Menu  @relation(fields: [menuId], references: [id])
+
+  @@map("order_items")
+}
+
