@@ -13,7 +13,7 @@ export default function HeroAbout() {
           Tentang COFFEE
         </h1>
 
-        <div className="relative w-full h-40 rounded-lg overflow-hidden border border-[#E8E8E8] bg-[#F7F7F7]">
+        <div className="relative w-full h-120 rounded-lg overflow-hidden border border-[#E8E8E8] bg-[#F7F7F7]">
           <Image
             src="/kopkit/HeroAbout.jpg"
             alt="Tentang Coffee Workspace & Cafe"
